@@ -5,15 +5,16 @@ import { GoogleLensSvg, GoogleMicSvg } from '../../assets/svg';
 import QuickFeed from './QuickFeed';
 
 const SearchBar = () => {
+  const {mainContainer,searchIcon,googleAsset} = styles
   return (
-    <View style={{height:65,backgroundColor:'#E8EAED',borderRadius:100,marginTop:10,justifyContent:'center',paddingLeft:45,}}>
-      <SearchIcon name='search' style={{position:'absolute',bottom:17,left:15,color:'grey'}} size={30}/>
+    <View style={mainContainer}>
+      <SearchIcon name='search' style={searchIcon} size={30}/>
       <TextInput
       placeholder='Search'
       placeholderTextColor={'grey'}
       style={{fontSize:22}}
       />
-      <View style={{position:'absolute',flexDirection:'row',alignItems:'center',right:15,gap:10}}>
+      <View style={googleAsset}>
         <GoogleMicSvg />
         <GoogleLensSvg />
       </View>
@@ -23,4 +24,8 @@ const SearchBar = () => {
 
 export default SearchBar
 
-const styles = StyleSheet.create({})
+const styles = StyleSheet.create({
+  mainContainer:{height:65,backgroundColor:'#E8EAED',borderRadius:100,marginTop:10,justifyContent:'center',paddingLeft:45},
+  searchIcon:{position:'absolute',bottom:17,left:15,color:'grey'},
+  googleAsset:{position:'absolute',flexDirection:'row',alignItems:'center',right:15,gap:10}
+})

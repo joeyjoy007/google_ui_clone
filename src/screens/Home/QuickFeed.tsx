@@ -12,7 +12,7 @@ const QuickFeed = () => {
 
     const quickFeedItems =[
         {
-            color:'#FCF7E3',
+            color:'#FDF6E4',
             icon:<ImageSearch color={'#A26316'} size={20} name={"image-search-outline"}/>
         },
         {

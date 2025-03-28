@@ -1,4 +1,5 @@
-import { StyleSheet, Text, View } from 'react-native'
+import 'react-native-gesture-handler'
+import { StyleSheet, } from 'react-native'
 import React from 'react'
 import TabNavigation from './src/navigations/TabNavigation'
 import { NavigationContainer } from '@react-navigation/native'
