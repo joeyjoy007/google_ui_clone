@@ -12,5 +12,5 @@ const Divider = ({top=27}:{top?:number}) => {
 export default Divider
 
 const styles = StyleSheet.create({
-    dividerStyle:{borderTopWidth:2.5,borderColor:colors.grey,opacity:.15}
+    dividerStyle:{borderTopWidth:1.7,borderColor:colors.grey,opacity:.15}
 })

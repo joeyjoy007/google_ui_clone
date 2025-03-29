@@ -5,6 +5,7 @@ import ImageSearch from 'react-native-vector-icons/MaterialCommunityIcons';
 import Study from 'react-native-vector-icons/Entypo';
 
 import React from 'react'
+import { colors } from '../../utils/colors';
 
 const QuickFeed = () => {
 
@@ -12,22 +13,22 @@ const QuickFeed = () => {
 
     const quickFeedItems =[
         {
-            color:'#FDF6E4',
-            icon:<ImageSearch color={'#A26316'} size={20} name={"image-search-outline"}/>
+            color:colors.light.orange,
+            icon:<ImageSearch color={colors.dark.orange} size={20} name={"image-search-outline"}/>
         },
         {
-            color:'#EAF0FF',
-            icon:<Language color={'#1472CB'} size={20} name={"language"}/>
+            color:colors.light.blue,
+            icon:<Language color={colors.dark.blue} size={20} name={"language"}/>
 
         },
         {
-            color:'#E8F2EA',
-            icon:<Study size={20} color={'#157832'} name={"graduation-cap"}/>
+            color:colors.light.green,
+            icon:<Study size={20} color={colors.dark.green} name={"graduation-cap"}/>
             
         },
         {
-            color:'#FDEAEC',
-            icon:<Music size={20} color={'#B32C1D'} name={"music-note"}/>
+            color:colors.light.red,
+            icon:<Music size={20} color={colors.dark.red} name={"music-note"}/>
 
         },
     ]

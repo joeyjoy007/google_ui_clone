@@ -65,3 +65,5 @@ export const bottomSheetList2 = [
         name:'Help and feedback',
     },
 ]
+
+export const searchList = ["cricket", "gmail","shirts","news","shoppin","chatgpt","watches","linkedin","instagram","facebook","naruto","one Piece","github"]

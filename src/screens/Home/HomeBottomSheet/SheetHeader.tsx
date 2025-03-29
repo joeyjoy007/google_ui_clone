@@ -1,6 +1,6 @@
 import {Image, StyleSheet, Text, TouchableOpacity, View} from 'react-native';
 import React from 'react';
-import {kkrTeam} from '../../../assets/images';
+import {kkrTeam, myProfile} from '../../../assets/images';
 import BoldText from '../../../components/TextInputs/BoldText';
 import SmallText from '../../../components/TextInputs/SmallText';
 import { colors } from '../../../utils/colors';
@@ -18,8 +18,8 @@ const SheetHeader = () => {
       <View style={headerContainer}>
         <View style={container}>
           <Image
-            source={kkrTeam}
-            style={{width: 45, height: 45, borderRadius: 22.5, borderWidth: 1}}
+            source={myProfile}
+            style={{width: 45, height: 45, borderRadius: 22.5}}
           />
 
           <View>

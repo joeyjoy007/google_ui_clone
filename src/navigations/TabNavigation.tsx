@@ -9,6 +9,7 @@ import React from 'react'
 import HomeScreen from '../screens/Home';
 import { navigationKey } from '../utils/navigation';
 import { fontFamily } from '../utils/styles';
+import SearchSreen from '../screens/Search';
 
 
 const TabNavigation = () => {
@@ -68,8 +69,8 @@ const TabNavigation = () => {
       }}
       
      >
-      <Tab.Screen name={navigationKey.HOME}  component={HomeScreen} />
-      <Tab.Screen name={navigationKey.SEARCH}  component={HomeScreen} />
+      <Tab.Screen name={navigationKey.HOME}   component={HomeScreen} />
+      <Tab.Screen name={navigationKey.SEARCH} options={{animation:'shift'}} component={SearchSreen} />
       <Tab.Screen name={navigationKey.SAVED}  component={HomeScreen} />
       <Tab.Screen name={navigationKey.NOTIFICATIONS}  component={HomeScreen} />
 
