@@ -16,3 +16,5 @@ export const fontFamily = {
     ProductSansThin:'ProductSans-Thin',
     ProductSansThinItalic:'ProductSans-ThinItalic'
 }
+
+export const globalFlexStyle ={flexDirection:'row',alignItems:'center'}

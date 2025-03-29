@@ -6,6 +6,7 @@ import SearchBar from './SearchBar';
 import QuickFeed from './QuickFeed';
 import QuickTodayFeed from './QuickTodayFeed';
 import RealFeed from './RealFeed';
+import { colors } from '../../utils/colors';
 const HomeScreen = () => {
   const {googleSvgStyle, mainContainer,divider} = styles;
 
@@ -31,7 +32,7 @@ const HomeScreen = () => {
 export default HomeScreen;
 
 const styles = StyleSheet.create({
-  mainContainer: {padding: 20},
+  mainContainer: {padding: 20,backgroundColor:colors.white},
   googleSvgStyle: {justifyContent: 'center', alignItems: 'center'},
   divider:{borderBottomWidth:1,marginTop:17,borderColor:'grey',opacity:.2}
 });
