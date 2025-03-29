@@ -3,6 +3,8 @@ import SearchIcon from 'react-native-vector-icons/MaterialIcons';
 import React from 'react'
 import { GoogleLensSvg, GoogleMicSvg } from '../../assets/svg';
 import QuickFeed from './QuickFeed';
+import { fontFamily } from '../../utils/styles';
+import { colors } from '../../utils/colors';
 
 const SearchBar = () => {
   const {mainContainer,searchIcon,googleAsset} = styles
@@ -11,8 +13,8 @@ const SearchBar = () => {
       <SearchIcon name='search' style={searchIcon} size={30}/>
       <TextInput
       placeholder='Search'
-      placeholderTextColor={'grey'}
-      style={{fontSize:22}}
+      placeholderTextColor={colors.grey}
+      style={{fontSize:22,fontFamily:fontFamily.ProductSansRegular}}
       />
       <View style={googleAsset}>
         <GoogleMicSvg />

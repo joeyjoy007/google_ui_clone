@@ -8,6 +8,7 @@ import MaterialCommunityIcons from 'react-native-vector-icons/MaterialCommunityI
 import React from 'react'
 import HomeScreen from '../screens/Home';
 import { navigationKey } from '../utils/navigation';
+import { fontFamily } from '../utils/styles';
 
 
 const TabNavigation = () => {
@@ -29,7 +30,7 @@ const TabNavigation = () => {
       
         return {
           headerShown: false,
-          tabBarStyle: { height: 60 },
+          tabBarStyle: { height: 65 },
           tabBarLabelStyle: { fontSize: 12 }, 
           tabBarActiveTintColor: '#0958CE', 
           tabBarInactiveTintColor: '#5D5D5D',
@@ -37,7 +38,10 @@ const TabNavigation = () => {
             <View style={{marginTop:2}}>
               <Text style={{ 
               color: focused ? '#0958CE' : '#5D5D5D', 
-              fontWeight: focused ? 'bold' : 'normal' 
+              // fontWeight: focused ? 'bold' : 'normal' ,
+              fontFamily:fontFamily.ProductSansMedium,
+              fontSize:13
+
             }}>
               {route.name}
             </Text>

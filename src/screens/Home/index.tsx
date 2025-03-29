@@ -1,14 +1,16 @@
 import {ScrollView, StyleSheet, Text, View} from 'react-native';
-import React from 'react';
+import React, { useCallback, useRef } from 'react';
 import Header from './Header';
 import {GoogleSvg} from '../../assets/svg';
 import SearchBar from './SearchBar';
 import QuickFeed from './QuickFeed';
 import QuickTodayFeed from './QuickTodayFeed';
 import RealFeed from './RealFeed';
-
 const HomeScreen = () => {
   const {googleSvgStyle, mainContainer,divider} = styles;
+
+
+
   return (
     <View style={mainContainer}>
      <ScrollView showsVerticalScrollIndicator={false}>

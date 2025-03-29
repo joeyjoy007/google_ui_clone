@@ -1,27 +1,29 @@
 import {Image, Pressable, ScrollView, StyleSheet, Text, TouchableOpacity, View} from 'react-native';
 import React from 'react';
-import {deviceWidth} from '../../utils/styles';
+import {fontFamily} from '../../utils/styles';
 import { SunSvg } from '../../assets/svg';
 import CricketBall from '../../assets/svg/AnimatedBallSvg';
 import { kkrTeam, rrTeam } from '../../assets/images';
+import SmallText from '../../components/TextInputs/SmallText';
+import BoldText from '../../components/TextInputs/BoldText';
 
 const QuickTodayFeed = () => {
   const content = [
     {
       id: 1,
-      title: 'T20 6 of 74',
+      title: 'T20 7 of 74',
       type: 't20',
       teamA: {
         name: 'RR',
         runs: '151/9',
         overs: '20',
-        icon:<Image source={rrTeam} width={20} height={20} style={{width:17,height:15}}/>
+        icon:<Image source={rrTeam} width={20} height={20} style={{width:15,height:13}}/>
     },
       teamB: {
         name: 'KKR',
         runs: '153/2',
         overs: '17.3',
-        icon:<Image source={kkrTeam} width={20} height={20} style={{width:13,height:19}}/>
+        icon:<Image source={kkrTeam} width={20} height={20} style={{width:14,height:19}}/>
 
       },
     },
@@ -44,7 +46,7 @@ const QuickTodayFeed = () => {
  
    
   ];
-  const {mainBox,titleText,basicContentContainer,teamContainer,teamIcon,teamName,teamOvers} = styles
+  const {mainBox,basicContentContainer,teamContainer,teamIcon,teamName,teamOvers} = styles
   return (
     <View style={{marginTop: 17}}>
   <ScrollView horizontal>
@@ -54,14 +56,15 @@ const QuickTodayFeed = () => {
           <Pressable
             key={i.toString()}
             style={mainBox}>
-            <Text style={titleText}>{e?.title}</Text>
+            <BoldText text={e.title}/>
             {
                ( e?.type == 'weather' || e?.type == 'match')?
               (  <View style={basicContentContainer}>
                    {
                     e?.type == 'match'?
-                    <Text style={{fontSize:11,width:80,lineHeight:15}}>{e?.content}</Text>
-                    : <Text style={{fontWeight:500,color:'black',fontSize:20}}>{e?.content}</Text>
+                    <SmallText style={{fontSize:11,width:80}} text={e.content ||''}/>
+                    : 
+                    <BoldText style={{fontSize:20}} text={e.content || ''}/>
                    }
                     {e?.icon}
                 </View>)
@@ -81,10 +84,11 @@ const QuickTodayFeed = () => {
                         <View style={teamContainer}>
                         <View style={teamIcon}>
                             {e.teamB.icon}                                             
-                            <Text style={teamName}>{e?.teamB?.name}</Text>
+                            <BoldText style={[teamOvers,{fontFamily:fontFamily.ProductSansMedium}]} text={e?.teamB?.name || ''}/>
+
                          </View>
                          <View style={{alignItems:'center'}}>
-                            <Text style={[teamOvers,{fontWeight:'bold'}]} >{e.teamB?.runs +' '+'('+e.teamB?.overs+')'}</Text>
+                          <BoldText style={[teamOvers,{fontFamily:fontFamily.ProductSansMedium}]} text={e.teamB?.runs +' '+'('+e.teamB?.overs+')'}/>
                          </View>
                         </View>
                     </View>
@@ -114,10 +118,9 @@ const styles = StyleSheet.create({
     flexDirection:'column',
     justifyContent:'space-between'
   },
-  titleText:{fontWeight:'500',color:'black',fontSize:14},
   basicContentContainer:{bottom:1,flexDirection:'row',justifyContent:'space-between',alignItems:'center'},
   teamContainer:{flexDirection:'row',alignItems:'center',justifyContent:'space-between'},
-  teamIcon:{flexDirection:'row',alignItems:'center',gap:2},
-  teamName:{fontSize:12,lineHeight:15},
-  teamOvers:{fontSize:12}
+  teamIcon:{flexDirection:'row',alignItems:'center',gap:2,width:45},
+  teamName:{fontSize:12,lineHeight:15,fontFamily:fontFamily.ProductSansRegular},
+  teamOvers:{fontSize:12,fontFamily:fontFamily.ProductSansRegular}
 });
