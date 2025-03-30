@@ -59,6 +59,10 @@ const SearchScreen = ({route}) => {
       navigation.navigate(navigationKey.SPEECH);
     }
   };
+
+  const requestLensAccess = async()=>{
+    navigation.navigate(navigationKey.LENS)
+  }
   return (
     <View style={parentView}>
         <View style={mainContainer}>
@@ -76,7 +80,9 @@ const SearchScreen = ({route}) => {
         <Pressable onPress={requestMicrophonePermission}>
           <GoogleMicSvg width={30} height={30} />
         </Pressable>
-        <GoogleLensSvg  width={22} height={22} />
+        <Pressable onPress={requestLensAccess}>
+          <GoogleLensSvg  width={22} height={22} />
+        </Pressable>
       </View>
     </View>
     <SearchList/>

@@ -11,6 +11,7 @@ import { navigationKey } from '../utils/navigation';
 import { fontFamily } from '../utils/styles';
 import SearchSreen from '../screens/Search';
 import Speech from '../screens/Speech';
+import Lens from '../screens/Lens';
 
 
 const TabNavigation = () => {
@@ -25,7 +26,7 @@ const TabNavigation = () => {
           [navigationKey.HOME]: { name: 'home', component: HomeIcon },
           [navigationKey.SEARCH]: { name: 'search', component: MaterialIcons },
           [navigationKey.SPEECH]: { name: 'bookmark-multiple-outline', component: MaterialCommunityIcons },
-          [navigationKey.NOTIFICATIONS]: { name: 'notifications-none', component: MaterialIcons },
+          [navigationKey.LENS]: { name: 'notifications-none', component: MaterialIcons },
         };
       
         const { name, component: IconComponent } = iconMap[route.name] || { name: 'help-circle', component: MaterialIcons };
@@ -73,7 +74,7 @@ const TabNavigation = () => {
       <Tab.Screen name={navigationKey.HOME}   component={HomeScreen} />
       <Tab.Screen name={navigationKey.SEARCH} options={{animation:'shift'}} component={SearchSreen} />
       <Tab.Screen name={navigationKey.SPEECH}  options={{animation:'fade'}} component={Speech} />
-      <Tab.Screen name={navigationKey.NOTIFICATIONS}  component={HomeScreen} />
+      <Tab.Screen name={navigationKey.LENS}  component={Lens} />
 
     </Tab.Navigator>
     </View>
