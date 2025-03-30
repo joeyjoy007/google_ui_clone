@@ -11,6 +11,12 @@ export const colors = {
         blue:'#1472CB',
         orange:'#A26316'
     },
+    google:{
+        blue:'#4285F4',
+        red:'#EA4335',
+        yellow:"#FBBC05", 
+        green:"#34A853"
+    },
     grey:'grey',
     sliverGrey:'#eeeded',
     lightGrey:'rgba(0,0,0,.2)',

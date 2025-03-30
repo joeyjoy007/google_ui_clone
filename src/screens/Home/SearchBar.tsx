@@ -17,7 +17,9 @@ const SearchBar = () => {
       <SearchIcon name='search' style={searchIcon} size={30}/>
         <BoldText style={textInputstyle} text='Search'/>
       <View style={googleAsset}>
-        <GoogleMicSvg />
+         <Pressable onPress={()=>navigation.navigate(navigationKey.SPEECH)}>
+                 <GoogleMicSvg />
+         </Pressable>
         <GoogleLensSvg />
       </View>
     </TouchableOpacity>
