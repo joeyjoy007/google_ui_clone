@@ -1,6 +1,6 @@
 export const navigationKey = {
     HOME:'Home',
     SEARCH:'Search',
-    SAVED:'Saved',
+    SPEECH:'Speech',
     NOTIFICATIONS:'Notifications'
 }

@@ -10,6 +10,7 @@ import HomeScreen from '../screens/Home';
 import { navigationKey } from '../utils/navigation';
 import { fontFamily } from '../utils/styles';
 import SearchSreen from '../screens/Search';
+import Speech from '../screens/Speech';
 
 
 const TabNavigation = () => {
@@ -23,7 +24,7 @@ const TabNavigation = () => {
         const iconMap = {
           [navigationKey.HOME]: { name: 'home', component: HomeIcon },
           [navigationKey.SEARCH]: { name: 'search', component: MaterialIcons },
-          [navigationKey.SAVED]: { name: 'bookmark-multiple-outline', component: MaterialCommunityIcons },
+          [navigationKey.SPEECH]: { name: 'bookmark-multiple-outline', component: MaterialCommunityIcons },
           [navigationKey.NOTIFICATIONS]: { name: 'notifications-none', component: MaterialIcons },
         };
       
@@ -71,7 +72,7 @@ const TabNavigation = () => {
      >
       <Tab.Screen name={navigationKey.HOME}   component={HomeScreen} />
       <Tab.Screen name={navigationKey.SEARCH} options={{animation:'shift'}} component={SearchSreen} />
-      <Tab.Screen name={navigationKey.SAVED}  component={HomeScreen} />
+      <Tab.Screen name={navigationKey.SPEECH}  options={{animation:'fade'}} component={Speech} />
       <Tab.Screen name={navigationKey.NOTIFICATIONS}  component={HomeScreen} />
 
     </Tab.Navigator>
