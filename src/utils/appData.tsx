@@ -2,6 +2,7 @@ import MaterialIcons from 'react-native-vector-icons/MaterialIcons';
 import MaterialCommunityIcons from 'react-native-vector-icons/MaterialCommunityIcons';
 import FeatherIcon from 'react-native-vector-icons/Feather';
 import IoniconsIcon from 'react-native-vector-icons/Ionicons';
+import EntypoIcons from 'react-native-vector-icons/Entypo';
 import { GoogleLensSvg } from "../assets/svg";
 import { colors } from './colors';
 
@@ -65,5 +66,21 @@ export const bottomSheetList2 = [
         name:'Help and feedback',
     },
 ]
+
+export const lensBottomData = [{
+    id:1,
+    icon:<IoniconsIcon name='language' color={colors.google.blue} size={20}/>,
+    name:'Translate'
+},
+{
+    id:2,
+    icon:<MaterialIcons name='search' color={colors.google.blue} size={20}/>,
+    name:'Search'
+},
+{
+    id:3,
+    icon:<EntypoIcons name='graduation-cap' color={colors.google.blue} size={20}/>,
+    name:'Homework'
+},]
 
 export const searchList = ["cricket", "gmail","shirts","news","shoppin","chatgpt","watches","linkedin","instagram","facebook","naruto","one Piece","github"]

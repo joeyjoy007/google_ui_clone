@@ -20,7 +20,9 @@ const SearchBar = () => {
          <Pressable onPress={()=>navigation.navigate(navigationKey.SPEECH)}>
                  <GoogleMicSvg />
          </Pressable>
-        <GoogleLensSvg />
+         <Pressable onPress={()=>navigation.navigate(navigationKey.LENS)}>
+                  <GoogleLensSvg />
+         </Pressable>
       </View>
     </TouchableOpacity>
   )
