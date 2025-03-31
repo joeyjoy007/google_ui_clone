@@ -29,7 +29,7 @@ const HomeBottomSheet = () => {
       <View style={bottomSheet2}>
         {bottomSheetList2?.map((e, i: number) => {
           return (
-            <>
+            
               <View
                 style={{
                   paddingHorizontal: 25,
@@ -41,7 +41,7 @@ const HomeBottomSheet = () => {
                 <View>{e.icon}</View>
                 <BoldText style={{marginTop: 2}} text={e?.name} />
               </View>
-            </>
+            
           );
         })}
       </View>

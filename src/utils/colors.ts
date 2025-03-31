@@ -20,6 +20,7 @@ export const colors = {
     grey:'grey',
     sliverGrey:'#eeeded',
     lightGrey:'rgba(0,0,0,.2)',
+    searchBarColor:'#e8eaed',
     white:'#fff',
     black:'#222',
     textGrey:'#1f1f1f',
