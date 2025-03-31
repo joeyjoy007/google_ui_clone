@@ -1,16 +1,32 @@
-import { Pressable, StyleSheet, Text, TouchableOpacity, View } from 'react-native'
+import { Image, Pressable, StyleSheet, Text, TextInput, TouchableOpacity, View } from 'react-native'
 import React from 'react'
 import { lensBottomData } from '../../utils/appData'
 import { fontFamily } from '../../utils/styles'
 import { colors } from '../../utils/colors'
+import { GoogleMicSvg } from '../../assets/svg'
 
-const BottomContainer = () => {
+const BottomContainer = ({capturedImage,separateImage}:{capturedImage:string,separateImage:string}) => {
     const [buttonState, setButtonState] = React.useState(1)
     const {childContainer,bottomContainer,actionButton,buttonText} = styles
-  return (
-     <View style={bottomContainer}>
+    return (
+   <>
+    <View>
+    {
+              capturedImage&&
+              <View style={{height:50,flexDirection:'row',borderRadius:25,backgroundColor:colors.searchBarColor,alignItems:'center',paddingHorizontal:30,width:'100%'}}>
+              <Text>Svg</Text>
+              <Image src={separateImage?.uri} style={{width:400,height:200,marginTop:100,resizeMode:'contain'}}/>
+             <TextInput
+              placeholder='Search...'
+              style={{fontFamily:fontFamily.ProductSansMedium}}
+              />
+              <GoogleMicSvg/>
+             </View>
+            }
+    <View style={bottomContainer}>
             <View style={childContainer}>
-            {
+           
+            {/* {
                 lensBottomData?.map((e,i)=>{
                     return (
                      <Pressable onPress={()=>setButtonState(i)} key={i.toString()} style={[actionButton,{backgroundColor:buttonState==i?colors.light.blue:'#ffffff00',borderColor:buttonState==i?colors.light.blue:colors.lightGrey}]}>
@@ -19,10 +35,12 @@ const BottomContainer = () => {
                       </Pressable>
                     )
                 })
-            }
+            } */}
             </View>
             
           </View>
+    </View>
+   </>
   )
 }
 
@@ -34,7 +52,7 @@ const styles = StyleSheet.create({
         alignItems: 'center',
         justifyContent: 'space-between',
         width: '100%',
-        flex:1
+        flex:1,
       },
       childContainer:{flexDirection:'row',width:'100%',paddingHorizontal:10,gap:8,alignItems:'center',justifyContent:'center'},
       actionButton: {

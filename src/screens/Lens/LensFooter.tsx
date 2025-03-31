@@ -11,7 +11,7 @@ import React from 'react';
 import {colors} from '../../utils/colors';
 import {deviceWidth, fontFamily} from '../../utils/styles';
 
-const LensFooter = () => {
+const LensFooter = ({takePicuture}:{takePicture:()=>{}}) => {
   const {bottomBar, title, icon,} = styles;
   return (
     <View style={bottomBar}>
@@ -21,6 +21,7 @@ const LensFooter = () => {
 
         <View style={{position:'absolute',bottom:0,justifyContent:'center',width:'100%',borderColor:'#fff',alignItems:'center'}}>
         <Pressable
+        onPress={takePicuture}
         style={{
           height: 70,
           width: 70,

@@ -12,8 +12,8 @@ const SheetList = () => {
       {
         bottomSheetList?.map((e,i:number)=>{
             return(
-              <>
-                 <View style={{padding:9,paddingHorizontal:25,flexDirection:'row',alignItems:'center',gap:15}} key={i.toString()}>
+              <View key={i.toString()}>
+                 <View style={{padding:9,paddingHorizontal:25,flexDirection:'row',alignItems:'center',gap:15}}>
                  <View style={{marginTop:e.halfDivider?0:7}}>{e.icon}</View>
                  <BoldText style={{marginLeft:e.divider?37:0,marginTop:e.halfDivider?0:7}} text={e?.name}/>
                </View>
@@ -23,7 +23,7 @@ const SheetList = () => {
                  {
                     e?.divider&&<Divider top={6}/>
                  }
-              </>
+              </View>
             )
         })
       }

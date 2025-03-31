@@ -1,39 +1,54 @@
 import {StyleSheet, Text, TouchableOpacity, View} from 'react-native';
 import MaterialCommunityIcons from 'react-native-vector-icons/MaterialCommunityIcons';
-import FeatherIcon from 'react-native-vector-icons/Feather';
+import MaterialIcon from 'react-native-vector-icons/MaterialIcons';
 import React from 'react';
 import {colors} from '../../utils/colors';
 import {fontFamily} from '../../utils/styles';
-import { useSafeAreaInsets } from 'react-native-safe-area-context';
-import { useNavigation } from '@react-navigation/native';
+import {useSafeAreaInsets} from 'react-native-safe-area-context';
+import {useNavigation} from '@react-navigation/native';
 
-const LensHeader = () => {
+const LensHeader = ({capturedImage}: {capturedImage: string}) => {
   const insets = useSafeAreaInsets();
   const {topBar, title, iconRow} = styles;
-  const navigation = useNavigation()
+  const navigation = useNavigation();
+
   return (
-    <View style={[topBar,{top:15+insets.top}]}>
+    <View style={[topBar, {top: 15 + insets.top}]}>
       <View style={iconRow}>
-        <TouchableOpacity onPress={()=>navigation.goBack()}>
-          <MaterialCommunityIcons name="close" size={24} color={colors.white} />
+        <TouchableOpacity
+          style={{zIndex: 99999999}}
+          onPress={() => navigation.goBack()}>
+          {capturedImage ? (
+            <MaterialIcon name="arrow-back" color={colors.white} size={25} />
+          ) : (
+            <MaterialCommunityIcons
+              name="close"
+              size={24}
+              color={colors.white}
+            />
+          )}
         </TouchableOpacity>
-        <TouchableOpacity>
-          <MaterialCommunityIcons
-            name="flash-off"
-            size={24}
-            color={colors.white}
-          />
-        </TouchableOpacity>
+        {!capturedImage && (
+          <TouchableOpacity>
+            <MaterialCommunityIcons
+              name="flash-off"
+              size={24}
+              color={colors.white}
+            />
+          </TouchableOpacity>
+        )}
       </View>
       <Text style={title}>Google Lens</Text>
       <View style={iconRow}>
-        <TouchableOpacity>
-          <MaterialCommunityIcons
-            name="history"
-            size={24}
-            color={colors.white}
-          />
-        </TouchableOpacity>
+        {!capturedImage && (
+          <TouchableOpacity>
+            <MaterialCommunityIcons
+              name="history"
+              size={24}
+              color={colors.white}
+            />
+          </TouchableOpacity>
+        )}
         <TouchableOpacity>
           <MaterialCommunityIcons
             name="dots-vertical"
