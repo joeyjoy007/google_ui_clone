@@ -68,7 +68,6 @@ const styles = StyleSheet.create({
   googleSvgStyle: {justifyContent: 'center', alignItems: 'center'},
   divider: {
     borderBottomWidth: 1,
-    marginTop: 17,
     borderColor: 'grey',
     opacity: 0.2,
   },
