@@ -14,7 +14,7 @@ const SearchScreen = ({scrollEnabled,setScrolledEnabled,searchListAnimation}:{sc
         const { snippet,image_url,source_icon,source} = item;
         const itemHeight = heights[index % heights.length]; 
         return (
-           <View style={{margin:5}}>
+           <View style={{padding:5}}>
              <View style={{
                 height: itemHeight,
                 width: deviceWidth / 2.2,

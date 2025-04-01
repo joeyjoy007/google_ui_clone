@@ -1,10 +1,9 @@
 import {
-  Image,
   Pressable,
+  ScrollView,
   StyleSheet,
   Text,
   TextInput,
-  TouchableOpacity,
   View,
 } from 'react-native';
 import React from 'react';
@@ -14,46 +13,58 @@ import {colors} from '../../utils/colors';
 import {GoogleLogo, GoogleMicSvg} from '../../assets/svg';
 import Divider from '../../components/Divider';
 import SearchScreen from './searchScreen/SearchScreen';
+import SearchTopBar from './SearchTopBar';
+import Animated, { useAnimatedStyle, withTiming } from 'react-native-reanimated';
 
 const BottomContainer = ({
   capturedImage,
   scrollEnabled,
   setScrolledEnabled,
-  searchListAnimation
+  searchListAnimation,
+  opacity
 }: {
   capturedImage: string;
-  scrollEnabled:boolean,
-  setScrolledEnabled:any
-  searchListAnimation:any
+  scrollEnabled: boolean;
+  setScrolledEnabled: any;
+  searchListAnimation: any;
+  opacity:number
 }) => {
   const [buttonState, setButtonState] = React.useState(1);
   const {childContainer, bottomContainer, actionButton, buttonText} = styles;
+
+
+  const opacityStyle = useAnimatedStyle(()=>{
+    return {
+      opacity:withTiming(opacity)
+    }
+  })
   return (
     <>
-      <View style={{width:'100%',flex:1,marginTop:capturedImage?0:10}}>
+      <View style={{width: '100%', flex: 1, marginTop: capturedImage ? 0 : 10}}>
         {capturedImage && (
-          <View
-            style={{
+          <Animated.View
+            style={[opacityStyle,{
               height: 50,
               flexDirection: 'row',
               borderRadius: 25,
               backgroundColor: colors.searchBarColor,
               alignItems: 'center',
-              justifyContent:'space-between',
+              justifyContent: 'space-between',
               paddingHorizontal: 20,
-
-            }}>
-            <View style={{flexDirection:'row'}}>
-            <GoogleLogo />
-            <TextInput
-              placeholder="Add to your search"
-              style={{fontFamily: fontFamily.ProductSansMedium,marginLeft:5}}
-              placeholderTextColor={colors.black}
-            />
-
+            }]}>
+            <View style={{flexDirection: 'row'}}>
+              <GoogleLogo />
+              <TextInput
+                placeholder="Add to your search"
+                style={{
+                  fontFamily: fontFamily.ProductSansMedium,
+                  marginLeft: 5,
+                }}
+                placeholderTextColor={colors.black}
+              />
             </View>
             <GoogleMicSvg />
-          </View>
+          </Animated.View>
         )}
         <View style={bottomContainer}>
           <View style={childContainer}>
@@ -88,12 +99,18 @@ const BottomContainer = ({
             })}
           </View>
         </View>
-        <Divider top={20}/>
-        <SearchScreen
-        scrollEnabled={scrollEnabled}
-        setScrolledEnabled={setScrolledEnabled}
-        searchListAnimation={searchListAnimation}
-        />
+
+        <View>
+          <SearchTopBar />
+        </View>
+        <Divider top={20} />
+        <View style={{marginTop: 10}}>
+          <SearchScreen
+            scrollEnabled={scrollEnabled}
+            setScrolledEnabled={setScrolledEnabled}
+            searchListAnimation={searchListAnimation}
+          />
+        </View>
       </View>
     </>
   );
@@ -106,7 +123,7 @@ const styles = StyleSheet.create({
     flexDirection: 'row',
     alignItems: 'center',
     justifyContent: 'space-between',
-    paddingTop:15,
+    paddingTop: 15,
     width: '100%',
     // flex: 1,
   },
