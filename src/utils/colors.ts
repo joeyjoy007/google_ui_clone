@@ -17,10 +17,17 @@ export const colors = {
         yellow:"#FBBC05", 
         green:"#34A853"
     },
+    tabBar:{
+        active:'#0958CE',
+        inactive: '#5D5D5D'
+    },
     grey:'grey',
     sliverGrey:'#eeeded',
+    lightWhite:"rgba(255, 255, 255, 0.5)",
+    lightBlack:'rgba(0,0,0,.5)' ,
     lightGrey:'rgba(0,0,0,.2)',
     searchBarColor:'#e8eaed',
+    transparent:'#ffffff00',
     white:'#fff',
     black:'#222',
     textGrey:'#1f1f1f',

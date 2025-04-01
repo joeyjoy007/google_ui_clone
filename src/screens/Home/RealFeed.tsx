@@ -1,57 +1,55 @@
 import {Image, StyleSheet, Text, View} from 'react-native';
 import React from 'react';
-import {realFeedImage1} from '../../assets/images';
 import BoldText from '../../components/TextInputs/BoldText';
 import SmallText from '../../components/TextInputs/SmallText';
-import { fontFamily } from '../../utils/styles';
-import { GoogleLensSvg } from '../../assets/svg';
+import {fontFamily} from '../../utils/styles';
+
+import {realFeedData} from '../../utils/appData';
+import {colors} from '../../utils/colors';
+import {MaterialCommunityIcons} from '../../utils/icons';
 
 const RealFeed = () => {
-  const data = [1, 2, 3, 4];
+  const {
+    mainImageBox,
+    mainImageview,
+    imageStyle,
+    viewTextStyle,
+    headingTextStyle,
+    sourceContainerstyle,
+    sourceSubcontainer,
+    sourceIcon,
+    sourceImage,
+    sourceText,
+  } = styles;
   return (
     <View>
-      {data?.map((e, i) => {
+      {realFeedData?.map((e, i) => {
         return (
-          <View
-            key={i.toString()}
-            style={{
-              backgroundColor: 'white',
-              marginTop: 15,
-              borderRadius: 20,
-              overflow: 'hidden',
-            }}>
-            <View style={{height: 230, borderRadius: 20}}>
-              <Image
-                source={realFeedImage1}
-                style={{height: '100%', aspectRatio: 4 / 2}}
-              />
+          <View key={i.toString()} style={mainImageBox}>
+            <View style={mainImageview}>
+              <Image source={e.image} style={imageStyle} />
             </View>
-            <View
-              style={{
-                padding: 10,
-                flexDirection: 'column',
-                justifyContent: 'space-between',
-                height: 130,
-              }}>
+            <View style={viewTextStyle}>
               <View>
                 <BoldText
-                  style={{fontSize: 20, lineHeight: 25, opacity: 0.8}}
+                  style={headingTextStyle}
                   numberOfLines={3}
-                  text={` Cabin approved 2% in \n dearness allowance for centrl \n goverment employess and parliament`}
+                  text={`${e.desc}`}
                 />
               </View>
 
-              <View
-                style={{
-                  flexDirection: 'row',
-                  justifyContent: 'space-between',
-                  alignItems: 'center',
-                }}>
-                 <View style={{flexDirection:'row',justifyContent:'center',alignItems:'center',gap:5}}>
-                 <GoogleLensSvg width={20} height={20}/>
-                 <SmallText style={{fontFamily:fontFamily.ProductSansLight}} text='DD News'/>
-                 </View>
-                 <SmallText style={{fontFamily:fontFamily.ProductSansLight}} text='Actions'/>
+              <View style={sourceContainerstyle}>
+                <View style={sourceSubcontainer}>
+                  <View style={sourceIcon}>
+                    <Image source={e.sourceImg} style={sourceImage} />
+                  </View>
+                  <SmallText style={sourceText} text={e.source} />
+                </View>
+                <MaterialCommunityIcons
+                  name="dots-vertical"
+                  size={20}
+                  color={colors.grey}
+                />
               </View>
             </View>
           </View>
@@ -63,4 +61,41 @@ const RealFeed = () => {
 
 export default RealFeed;
 
-const styles = StyleSheet.create({});
+const styles = StyleSheet.create({
+  mainImageBox: {
+    backgroundColor: 'white',
+    marginTop: 15,
+    borderRadius: 20,
+    overflow: 'hidden',
+  },
+  mainImageview: {height: 230, borderRadius: 20},
+  imageStyle: {height: '100%', aspectRatio: 4 / 2},
+  viewTextStyle: {
+    padding: 10,
+    flexDirection: 'column',
+    justifyContent: 'space-between',
+    height: 130,
+  },
+  headingTextStyle: {fontSize: 20, lineHeight: 25, opacity: 0.8},
+  sourceContainerstyle: {
+    flexDirection: 'row',
+    justifyContent: 'space-between',
+    alignItems: 'center',
+  },
+  sourceSubcontainer: {
+    flexDirection: 'row',
+    justifyContent: 'center',
+    alignItems: 'center',
+    gap: 5,
+  },
+  sourceImage: {height: '100%', resizeMode: 'contain'},
+  sourceIcon: {
+    borderRadius: 100,
+    width: 20,
+    height: 20,
+    alignItems: 'center',
+    justifyContent: 'center',
+    overflow: 'hidden',
+  },
+  sourceText: {fontFamily: fontFamily.ProductSansLight},
+});

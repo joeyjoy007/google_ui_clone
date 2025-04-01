@@ -5,16 +5,16 @@ import BoldText from '../../../components/TextInputs/BoldText';
 import SmallText from '../../../components/TextInputs/SmallText';
 import { colors } from '../../../utils/colors';
 import { fontFamily } from '../../../utils/styles';
-import IoniconsIcon from 'react-native-vector-icons/Ionicons';
+import { IoniconsIcon } from '../../../utils/icons';
 
 
 
 const SheetHeader = () => {
-    const {googleAccountButton,headerContainer,container} = styles
+    const {googleAccountButton,headerContainer,container,maincontainer} = styles
 
     
   return (
-    <View style={{padding:15}}>
+    <View style={maincontainer}>
       <View style={headerContainer}>
         <View style={container}>
           <Image
@@ -35,7 +35,7 @@ const SheetHeader = () => {
 
       <TouchableOpacity
         style={googleAccountButton}>
-        <Text style={{fontFamily:fontFamily.ProductSansMedium}}>Google Account</Text>
+        <BoldText text='Google Account'/>
       </TouchableOpacity>
     </View>
   );
@@ -44,6 +44,7 @@ const SheetHeader = () => {
 export default SheetHeader;
 
 const styles = StyleSheet.create({
+  maincontainer:{padding:15},
     googleAccountButton:{
         borderWidth: 1,
         borderColor:colors.lightGrey,

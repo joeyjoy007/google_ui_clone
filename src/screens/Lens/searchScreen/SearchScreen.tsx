@@ -41,12 +41,10 @@ const SearchScreen = ({scrollEnabled,setScrolledEnabled,searchListAnimation}:{sc
         );
     };
 
-    const numColumns = 2;
-
   return (
     <View >   
         <FlatList
-            data={mockSearchData[0]?.search_results}
+            data={[...mockSearchData[0]?.search_results, ...mockSearchData[0]?.search_results, ...mockSearchData[0]?.search_results]}
             keyExtractor={(e,i)=>i.toString()}
             scrollEnabled={scrollEnabled}
             renderItem={renderSearchItem}

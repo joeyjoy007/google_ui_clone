@@ -1,16 +1,16 @@
 import {  Image, Pressable, StyleSheet, View } from 'react-native'
-import MaterialCommunityIcons from 'react-native-vector-icons/MaterialCommunityIcons';
 
 import React, { useContext, useRef } from 'react'
 import { BottomSheetContext } from '../../context/BottomSheetContext.tsx';
 import { myProfile } from '../../assets/images/index.ts';
+import BottomSheet from '@gorhom/bottom-sheet';
+import { MaterialCommunityIcons } from '../../utils/icons.ts';
 
 const Header = () => {
    const {headerContainer,profileIcon} = styles
-   const {bottomSheetRef} = useContext(BottomSheetContext)
+   const {bottomSheetRef}:BottomSheet|any = useContext(BottomSheetContext)
    
    const openSheet = ()=>{
-    console.log("first,bott",bottomSheetRef.current)
      bottomSheetRef.current.snapToIndex(1)
 
    }

@@ -1,13 +1,15 @@
 import React from 'react';
-import { FlatList, StyleSheet, Text, View } from 'react-native';
-import FeatherIcon from 'react-native-vector-icons/Feather';
-import { searchList } from '../../utils/appData';
+import {FlatList, StyleSheet, Text, View} from 'react-native';
+import {searchList} from '../../utils/appData';
 import NormalText from '../../components/TextInputs/NormalText';
-import { colors } from '../../utils/colors';
+import {colors} from '../../utils/colors';
+import {FeatherIcon} from '../../utils/icons';
 
 const SearchList = () => {
-  const renderSearchList = ({ item, index }:{item:string,index:number}) => (
-    <View key={index.toString()} style={[styles.itemContainer,{marginTop:index==0?10:18}]}>
+  const renderSearchList = ({item, index}: {item: string; index: number}) => (
+    <View
+      key={index.toString()}
+      style={[styles.itemContainer, {marginTop: index == 0 ? 10 : 18}]}>
       <View style={styles.iconContainer}>
         <FeatherIcon size={17} name="clock" />
       </View>
@@ -18,7 +20,7 @@ const SearchList = () => {
   return (
     <View style={styles.container}>
       <FlatList
-        data={[...searchList,...searchList]}
+        data={[...searchList, ...searchList]}
         renderItem={renderSearchList}
         showsVerticalScrollIndicator={false}
         keyExtractor={(item, index) => index.toString()}
@@ -36,7 +38,7 @@ const styles = StyleSheet.create({
     paddingHorizontal: 8,
   },
   listContainer: {
-    paddingBottom: 20, 
+    paddingBottom: 20,
   },
   itemContainer: {
     flexDirection: 'row',

@@ -5,7 +5,6 @@ import { NavigationContainer } from '@react-navigation/native'
 import TabNavigation from './TabNavigation'
 import BottomSheetComponent from '../components/BottomSheet.tsx'
 import { BottomSheetContext } from '../context/BottomSheetContext.tsx'
-import { SafeAreaView } from 'react-native-safe-area-context'
 import { colors } from '../utils/colors.ts'
 
 const SubEntryFile = () => {
@@ -18,7 +17,7 @@ const SubEntryFile = () => {
     <>
        <StatusBar
        barStyle={'dark-content'}    
-       backgroundColor={'#ffffff00'}
+       backgroundColor={colors.transparent}
        translucent={false}
        />     
       <NavigationContainer>

@@ -148,11 +148,10 @@ const startY = useSharedValue(0);
 
 
   const searchListAnimation = (e)=>{
-    console.log("SSs",e)
     e.nativeEvent.contentOffset.y < 30 && setScrollEnabled(false)
 
   }
-  if (!hasPermission) return <Text>Camera permission is required</Text>;
+  if (!hasPermission) return <Text style={{textAlign:'center',width:'100%',flex:1,marginTop:deviceHeight/2}}>Camera permission is required</Text>;
   if (!device) return <Text>No Camera Available</Text>;
   return (
     <View style={styles.container}>

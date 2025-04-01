@@ -1,19 +1,17 @@
 import React from 'react';
-import {StyleSheet, Text, View} from 'react-native';
-import FeatherIcon from 'react-native-vector-icons/Feather';
+import {StyleSheet, View} from 'react-native';
 import BoldText from '../../components/TextInputs/BoldText';
 import {colors} from '../../utils/colors';
 import {searchList} from '../../utils/appData';
+import {FeatherIcon} from '../../utils/icons';
 
 const HistoryData = () => {
-  const {historyDataContainer,maincontainer} = styles
+  const {historyDataContainer, maincontainer} = styles;
   return (
     <View style={maincontainer}>
       {searchList?.slice(0, 4).map((e, i) => {
         return (
-          <View
-            key={i.toString()}
-            style={historyDataContainer}>
+          <View key={i.toString()} style={historyDataContainer}>
             {i < 2 ? (
               <FeatherIcon color={colors.google.blue} size={17} name="clock" />
             ) : (
@@ -34,7 +32,7 @@ const HistoryData = () => {
 export default HistoryData;
 
 const styles = StyleSheet.create({
-  historyDataContainer:{
+  historyDataContainer: {
     borderWidth: 1.5,
     borderColor: colors.sliverGrey,
     height: 40,
@@ -45,5 +43,5 @@ const styles = StyleSheet.create({
     alignItems: 'center',
     paddingHorizontal: 10,
   },
-  maincontainer:{width: '100%', paddingHorizontal: 10, gap: 15}
+  maincontainer: {width: '100%', paddingHorizontal: 10, gap: 15},
 });
