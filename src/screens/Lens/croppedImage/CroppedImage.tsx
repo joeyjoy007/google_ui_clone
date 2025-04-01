@@ -4,8 +4,9 @@ import { Gesture, GestureDetector, GestureHandlerRootView } from 'react-native-g
 import Animated, { useSharedValue, useAnimatedStyle, withSpring, runOnJS } from 'react-native-reanimated';
 import ViewShot from 'react-native-view-shot';
 import ImageEditor from "@react-native-community/image-editor";
+import { deviceWidth } from '../../../utils/styles';
 
-const CroppedImage = ({ capturedImage, setSeparateImage }: { capturedImage: string; onCropped: (uri: string) => void }) => {
+const CroppedImage = ({ capturedImage, setSeparateImage,animatedBannerStyle }: { capturedImage: string; onCropped: (uri: string) => void }) => {
   const viewShotRef = useRef<ViewShot>(null);
   const lastCaptureTime = useRef<number>(0);
 
@@ -59,7 +60,6 @@ const CroppedImage = ({ capturedImage, setSeparateImage }: { capturedImage: stri
     
     if (viewShotRef.current) {
       const uri = await viewShotRef.current.capture();
-      console.log("DIMES")
       const cropData = {
         offset: { x: translateX.value, y: translateY.value },
         size: { width: width.value, height: height.value },
@@ -94,27 +94,23 @@ const CroppedImage = ({ capturedImage, setSeparateImage }: { capturedImage: stri
   }));
 
   return (
-    <GestureHandlerRootView style={styles.container}>
-  <ViewShot ref={viewShotRef} options={{ format: 'png', quality:1 }} style={styles.viewShot}>
-    <Image source={{ uri: `file://${capturedImage}` }} style={styles.image} />
+    
+   <View style={{backgroundColor:'#222',borderBottomLeftRadius:20,borderBottomRightRadius:20}}> 
+     <Animated.Image source={{ uri: `file://${capturedImage}` }} style={[animatedBannerStyle,styles.image]} />
+   </View>
 
     
 
-    {/* Draggable Crop Selector */}
-    <GestureDetector gesture={Gesture.Simultaneous(panGesture, pinchGesture)}>
-      <Animated.View style={[styles.cropBox, cropBoxStyle]} />
-    </GestureDetector>
-  </ViewShot>
-</GestureHandlerRootView>
+ 
   );
 };
 
 export default CroppedImage;
 
 const styles = StyleSheet.create({
-  container: { flex: 1 },
+  container: { flex: 1 ,borderWidth:5,borderColor:'#222',zIndex:111111,backgroundColor:'red'},
   viewShot: { flex: 1, alignItems: 'center', justifyContent: 'center' },
-  image: { width: '100%', height: '100%', resizeMode: 'contain' },
+  image: { width: 400, height: '100%', resizeMode: 'contain' },
   cropBox: {
     position: 'absolute',
     borderColor: 'red',

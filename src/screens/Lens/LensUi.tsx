@@ -1,38 +1,53 @@
-import React, {useEffect, useRef, useState, useCallback} from 'react';
-import {View, Text, StyleSheet, StatusBar, Image} from 'react-native';
+import React, {useState, useCallback, useRef, use} from 'react';
+import {
+  View,
+  Button,
+  StyleSheet,
+  StatusBar,
+  Dimensions,
+  Text,
+} from 'react-native';
+import Animated, {
+  useSharedValue,
+  useAnimatedStyle,
+  withTiming,
+  runOnJS,
+  interpolate,
+  Extrapolation,
+} from 'react-native-reanimated';
 import {useFocusEffect} from '@react-navigation/native';
+import {
+  Gesture,
+  GestureDetector,
+  ScrollView,
+} from 'react-native-gesture-handler';
 import {Camera, useCameraDevices} from 'react-native-vision-camera';
+
+import {deviceHeight} from '../../utils/styles';
 import {RESULTS} from 'react-native-permissions';
-import LensHeader from './Header';
 import FocusCorners from './FocusCorners';
-import BottomContainer from './BottomContainer';
 import LensFooter from './LensFooter';
-import Animated, { useAnimatedStyle, useSharedValue, withTiming } from 'react-native-reanimated';
+import LensHeader from './Header';
+import BottomContainer from './BottomContainer';
 import CroppedImage from './croppedImage/CroppedImage';
 
+const {height, width} = Dimensions.get('window');
+
 const GoogleLensUI = () => {
+  const [expanded, setExpanded] = useState(false);
+  const [scrollEnabled, setScrollEnabled] = useState(false);
   const [hasPermission, setHasPermission] = useState(false);
-  const [capturedImage, setCapturedImage] = useState(null)
-  const [separateImage, setSeparateImage] = useState('')
+  const [capturedImage, setCapturedImage] = useState(null);
 
   const devices = useCameraDevices();
   const cameraRef = useRef(null);
   const device = devices?.[0];
 
-  const {bottomParentContainerStyle} = styles
-  const bottomHeightFlex = useSharedValue(0.09);
-  const footerOpacity = useSharedValue(1);
-
-  const animatedBottomStyle = useAnimatedStyle(()=>{
-    return {
-      flex: withTiming(bottomHeightFlex.value,{duration:300}),
-    }
-  })
-  const footerStyle = useAnimatedStyle(()=>{
-    return {
-      opacity: withTiming(footerOpacity.value,{duration:300}),
-    }
-  })
+  const flexFirst = useSharedValue(0.9);
+  const flexSecond = useSharedValue(0.1);
+  const offsetY = useSharedValue(0); // Stores last known position
+const startY = useSharedValue(0);
+  
 
   useFocusEffect(
     useCallback(() => {
@@ -44,92 +59,157 @@ const GoogleLensUI = () => {
         StatusBar.setBarStyle('dark-content');
         StatusBar.setBackgroundColor('#fff');
         StatusBar.setTranslucent(false);
+        flexFirst.value = 0.9;
+        flexSecond.value = 0.1;
+        offsetY.value =0 // Stores last known position
+        offsetY.value =0;
+        setExpanded(false);
+        setScrollEnabled(false);
         setCapturedImage(null)
-        bottomHeightFlex.value = 0.09; 
-        footerOpacity.value = 1; 
       };
     }, []),
   );
 
-  useEffect(() => {
+  React.useEffect(() => {
     (async () => {
       const status = await Camera.requestCameraPermission();
       setHasPermission(status === RESULTS.GRANTED);
     })();
   }, []);
 
-  if (!hasPermission) return <Text>Camera permission is required</Text>;
-  if (!device) return <Text>No Camera Available</Text>;
-
   const takePicture = async () => {
     if (cameraRef.current) {
       const photo = await cameraRef.current.takePhoto();
-      setCapturedImage(photo.path); 
-      bottomHeightFlex.value = .6;
-      footerOpacity.value = 0;
+      setCapturedImage(photo.path);
+      if (!expanded) {
+        flexFirst.value = withTiming(0.6, {duration: 300});
+        flexSecond.value = withTiming(0.4, {duration: 300});
+      } else {
+        flexFirst.value = withTiming(0.9, {duration: 300});
+        flexSecond.value = withTiming(0.1, {duration: 300});
+      }
+      setExpanded(!expanded);
     }
   };
 
- 
-  
 
+  const firstViewStyle = useAnimatedStyle(() => ({
+    flex: flexFirst.value,
+    justifyContent: 'center',
+    alignItems: 'center',
+  }));
+
+  const secondViewStyle = useAnimatedStyle(() => ({
+    flex: flexSecond.value,
+  }));
+
+  const panGesture = Gesture.Pan()
+    .onBegin(event => {
+      console.log('EVENT start', event);
+      startY.value = offsetY.value;
+      
+    })
+    .onChange(event => {
+      const translationY = event.translationY;
+      const newOffset = startY.value + translationY;
+      // if(expanded){
+         flexFirst.value = interpolate(
+      newOffset,
+      [-200, 0, 200], // Input range (scroll up to scroll down)
+      [0.15, 0.6, 0.9], // Output range for flexFirst
+      Extrapolation.CLAMP // Ensures values stay within range
+    );
+
+    flexSecond.value = interpolate(
+      newOffset,
+      [-200, 0, 200],
+      [0.85, 0.4, 0.1],
+      Extrapolation.CLAMP // Ensures values stay within range
+    );
+      // }
+   
+      
+
+    })
+    .onFinalize(event => {
+      if (expanded && event.translationY < -20) {
+        flexFirst.value = withTiming(0.15, {duration: 300});
+        flexSecond.value = withTiming(0.85, {duration: 300});
+        ('worklet');
+        runOnJS(setScrollEnabled)(true);
+      } else if (expanded && event.translationY > 20) {
+        flexFirst.value = withTiming(0.6, {duration: 300});
+        flexSecond.value = withTiming(0.4, {duration: 300});
+       
+      }
+        offsetY.value = startY.value + event.translationY;
+    });
+
+
+
+  const searchListAnimation = (e)=>{
+    console.log("SSs",e)
+    e.nativeEvent.contentOffset.y < 30 && setScrollEnabled(false)
+
+  }
+  if (!hasPermission) return <Text>Camera permission is required</Text>;
+  if (!device) return <Text>No Camera Available</Text>;
   return (
     <View style={styles.container}>
-      <View style={styles.upperContainer}>
+      {/* First View with Button */}
+      <Animated.View style={[firstViewStyle]}>
+        {
+           capturedImage?
+         <>
+           <CroppedImage 
+          capturedImage={capturedImage}/>
+          <LensHeader capturedImage={capturedImage} /> 
+         </>
 
-      {capturedImage ? (
-       
-         <CroppedImage 
-        setSeparateImage={setSeparateImage}
-        capturedImage={capturedImage}/>
-      ) : (
-       <>
-         <Camera
-        ref={cameraRef}
-        style={StyleSheet.absoluteFill}
-        device={device}
-        isActive={true}
-        photo={true}
-      />     
-      
-      <FocusCorners />
-     <LensFooter
-      takePicuture={takePicture}
-      />
-       </>
-      )}
-      <LensHeader 
-        capturedImage={capturedImage}
-      />
-     
-       
-      </View>
+          :
+          <>
+            <Camera
+              ref={cameraRef}
+              style={StyleSheet.absoluteFill}
+              device={device}
+              isActive={true}
+              photo={true}
+            />
+            <FocusCorners />
+            <LensFooter takePicuture={takePicture} />
+            <LensHeader capturedImage={capturedImage} /> 
 
-      <Animated.View style={[styles.bottomParentContainerStyle, animatedBottomStyle]}>
-        <BottomContainer 
-        separateImage={separateImage}
-        capturedImage={capturedImage} />
+          </>
+        }
       </Animated.View>
+
+      {/* Second View */}
+      <GestureDetector gesture={panGesture}>
+        <Animated.View style={[secondViewStyle]}>
+          <View style={{flex:1}}>
+            {/* <ScrollView
+             nestedScrollEnabled={true}
+             keyboardShouldPersistTaps={true}
+              onScroll={e =>
+                e.nativeEvent.contentOffset.y < 10 && setScrollEnabled(false)
+              }
+              scrollEnabled={scrollEnabled}> */}
+               <BottomContainer
+                  capturedImage={capturedImage}
+                  scrollEnabled={scrollEnabled}
+                  setScrolledEnabled={setScrollEnabled}
+                  searchListAnimation={searchListAnimation}
+              />
+            {/* </ScrollView> */}
+          </View>
+        </Animated.View>
+      </GestureDetector>
     </View>
   );
 };
 
 const styles = StyleSheet.create({
   container: {flex: 1},
-  bottomParentContainerStyle: {
-    borderColor: '#222',
-    alignItems: 'center',
-        justifyContent: 'center',
-  },
-  upperContainer: {
-    flex: 1,
-    borderBottomLeftRadius: 25,
-    borderBottomRightRadius: 25,
-    borderWidth: 1,
-    overflow: 'hidden',
-    borderColor: '#fff',
-    backgroundColor: '#222',
-  },
 });
 
 export default GoogleLensUI;
