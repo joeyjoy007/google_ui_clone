@@ -1,11 +1,11 @@
 import {StyleSheet, Text, TouchableOpacity, View} from 'react-native';
-import MaterialCommunityIcons from 'react-native-vector-icons/MaterialCommunityIcons';
-import MaterialIcon from 'react-native-vector-icons/MaterialIcons';
+
 import React from 'react';
 import {colors} from '../../utils/colors';
 import {fontFamily} from '../../utils/styles';
 import {useSafeAreaInsets} from 'react-native-safe-area-context';
 import {useNavigation} from '@react-navigation/native';
+import { MaterialCommunityIcons, MaterialIcons } from '../../utils/icons';
 
 const LensHeader = ({capturedImage}: {capturedImage: string}) => {
   const insets = useSafeAreaInsets();
@@ -19,7 +19,7 @@ const LensHeader = ({capturedImage}: {capturedImage: string}) => {
           style={{zIndex: 99999999}}
           onPress={() => navigation.goBack()}>
           {capturedImage ? (
-            <MaterialIcon name="arrow-back" color={colors.white} size={25} />
+            <MaterialIcons name="arrow-back" color={colors.white} size={25} />
           ) : (
             <MaterialCommunityIcons
               name="close"

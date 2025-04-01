@@ -3,6 +3,9 @@ import { Dimensions } from "react-native";
 export const deviceWidth = Dimensions.get('window').width
 export const deviceHeight = Dimensions.get('window').height
 
+
+export const globalFlexStyle ={flexDirection:'row',alignItems:'center'}
+
 export const fontFamily = {
     ProductSansBlack:'ProductSans-Black',
     ProductSansBlackItalic:'ProductSans-BlackItalic',
@@ -16,5 +19,3 @@ export const fontFamily = {
     ProductSansThin:'ProductSans-Thin',
     ProductSansThinItalic:'ProductSans-ThinItalic'
 }
-
-export const globalFlexStyle ={flexDirection:'row',alignItems:'center'}

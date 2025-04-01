@@ -1,21 +1,19 @@
-import { StyleSheet, Text, TouchableOpacity, TouchableWithoutFeedback, View } from 'react-native'
-import { createBottomTabNavigator } from '@react-navigation/bottom-tabs';
-import HomeIcon from 'react-native-vector-icons/Foundation';
-import MaterialIcons from 'react-native-vector-icons/MaterialIcons';
-import MaterialCommunityIcons from 'react-native-vector-icons/MaterialCommunityIcons';
-
-
 import React from 'react'
+import { StyleSheet, Text, TouchableOpacity,  View } from 'react-native'
+import { createBottomTabNavigator } from '@react-navigation/bottom-tabs';
 import HomeScreen from '../screens/Home';
 import { navigationKey } from '../utils/navigation';
 import { fontFamily } from '../utils/styles';
 import SearchSreen from '../screens/Search';
 import Speech from '../screens/Speech';
 import Lens from '../screens/Lens';
+import { colors } from '../utils/colors';
+import { Foundation, MaterialCommunityIcons, MaterialIcons } from '../utils/icons';
 
 
 const TabNavigation = () => {
     const Tab = createBottomTabNavigator();
+    const {tabBarIconContainer,tabBarIcon,tabBarButtonStyle} =styles
 
 
   return (
@@ -23,7 +21,7 @@ const TabNavigation = () => {
       <Tab.Navigator
       screenOptions={({ route }) => {
         const iconMap = {
-          [navigationKey.HOME]: { name: 'home', component: HomeIcon },
+          [navigationKey.HOME]: { name: 'home', component: Foundation },
           [navigationKey.SEARCH]: { name: 'search', component: MaterialIcons },
           [navigationKey.SPEECH]: { name: 'bookmark-multiple-outline', component: MaterialCommunityIcons },
           [navigationKey.LENS]: { name: 'notifications-none', component: MaterialIcons },
@@ -35,13 +33,12 @@ const TabNavigation = () => {
           headerShown: false,
           tabBarStyle: { height: 65 },
           tabBarLabelStyle: { fontSize: 12 }, 
-          tabBarActiveTintColor: '#0958CE', 
-          tabBarInactiveTintColor: '#5D5D5D',
+          tabBarActiveTintColor: colors.tabBar.active, 
+          tabBarInactiveTintColor:colors.tabBar.inactive,
           tabBarLabel: ({ focused }) => (
             <View style={{marginTop:2}}>
               <Text style={{ 
-              color: focused ? '#0958CE' : '#5D5D5D', 
-              // fontWeight: focused ? 'bold' : 'normal' ,
+              color: focused ? colors.tabBar.active:colors.tabBar.inactive, 
               fontFamily:fontFamily.ProductSansMedium,
               fontSize:13
 
@@ -52,17 +49,17 @@ const TabNavigation = () => {
           ),
           tabBarHideOnKeyboard: true,
           tabBarButton: (props) => (
-            <TouchableOpacity {...props} activeOpacity={1} style={styles.tabBarButtonStyle}>
+            <TouchableOpacity {...props} activeOpacity={1} style={tabBarButtonStyle}>
               {props.children}
             </TouchableOpacity>
           ),
           tabBarIcon: ({ color, size, focused }) => (
-            <View style={{width:60,alignItems:'center',height:35,justifyContent:'center'}}>
-              <View style={focused?styles.tabBarIcon:{}}>
+            <View style={tabBarIconContainer}>
+              <View style={focused?tabBarIcon:{}}>
               <IconComponent 
                 name={name} 
                 size={size} 
-                color={focused ? '#0958CE' : '#5D5D5D'}
+                color={focused ? colors.tabBar.active:colors.tabBar.inactive}
               />
               </View>
             
@@ -72,7 +69,7 @@ const TabNavigation = () => {
       
      >
       <Tab.Screen name={navigationKey.HOME}   component={HomeScreen} />
-      <Tab.Screen name={navigationKey.SEARCH} options={{animation:'shift'}} component={SearchSreen} />
+      <Tab.Screen name={navigationKey.SEARCH} options={{animation:'fade'}} component={SearchSreen} />
       <Tab.Screen name={navigationKey.SPEECH}  options={{animation:'fade'}} component={Speech} />
       <Tab.Screen name={navigationKey.LENS}  component={Lens} />
 
@@ -90,5 +87,6 @@ const styles = StyleSheet.create({
     alignItems: 'center',
     justifyContent: 'center',
     borderRadius: 100,},
-    tabBarButtonStyle:{ flex: 1,alignItems:'center',justifyContent:'center' }
+    tabBarButtonStyle:{ flex: 1,alignItems:'center',justifyContent:'center' },
+    tabBarIconContainer:{width:60,alignItems:'center',height:35,justifyContent:'center'}
 })

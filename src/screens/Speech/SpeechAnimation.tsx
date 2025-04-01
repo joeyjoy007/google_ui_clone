@@ -8,7 +8,7 @@ const BAR_COLORS = [colors.google.blue,colors.google.red,colors.google.yellow,co
 
 const GoogleSpeechAnimation = () => {
   const bars = Array.from({ length: BAR_COUNT }).map(() => useSharedValue(10));
-  const {maincontainer} = styles
+  const {maincontainer,mainBars} = styles
 
   React.useEffect(() => {
     bars.forEach((bar, index) => {
@@ -34,13 +34,10 @@ const GoogleSpeechAnimation = () => {
           <Animated.View
             key={index}
             style={[
-              {
-                width: 8,
-                marginHorizontal: 4,
+              mainBars,
+              animatedStyle,{
                 backgroundColor: BAR_COLORS[index],
-                borderRadius: 4,
-              },
-              animatedStyle,
+              }
             ]}
           />
         );
@@ -52,5 +49,10 @@ const GoogleSpeechAnimation = () => {
 export default GoogleSpeechAnimation;
 
 const styles = StyleSheet.create({
-  maincontainer:{ flexDirection: "row", alignItems: "center", justifyContent: "center", height: 60 }
+  maincontainer:{ flexDirection: "row", alignItems: "center", justifyContent: "center", height: 60 },
+  mainBars:{
+    width: 8,
+    marginHorizontal: 4,
+    borderRadius: 4,
+  }
 });

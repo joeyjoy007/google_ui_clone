@@ -5,11 +5,10 @@ import {
   TouchableOpacity,
   View,
 } from 'react-native';
-import MaterialCommunityIcons from 'react-native-vector-icons/MaterialCommunityIcons';
-import MaterialIcons from 'react-native-vector-icons/MaterialIcons';
 import React from 'react';
 import {colors} from '../../utils/colors';
 import {deviceWidth, fontFamily} from '../../utils/styles';
+import { MaterialIcons } from '../../utils/icons';
 
 const LensFooter = ({takePicuture}:{takePicture:()=>{}}) => {
   const {bottomBar, title, icon,} = styles;
