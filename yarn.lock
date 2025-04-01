@@ -1005,20 +1005,7 @@
     "@babel/parser" "^7.27.0"
     "@babel/types" "^7.27.0"
 
-"@babel/traverse--for-generate-function-map@npm:@babel/traverse@^7.25.3":
-  version "7.27.0"
-  resolved "https://registry.yarnpkg.com/@babel/traverse/-/traverse-7.27.0.tgz#11d7e644779e166c0442f9a07274d02cd91d4a70"
-  integrity sha512-19lYZFzYVQkkHkl4Cy4WrAVcqBkgvV2YM2TU3xG6DIwO7O3ecbDPfW3yM3bjAGcqcQHi+CCtjMR3dIEHxsd6bA==
-  dependencies:
-    "@babel/code-frame" "^7.26.2"
-    "@babel/generator" "^7.27.0"
-    "@babel/parser" "^7.27.0"
-    "@babel/template" "^7.27.0"
-    "@babel/types" "^7.27.0"
-    debug "^4.3.1"
-    globals "^11.1.0"
-
-"@babel/traverse@^7.25.3", "@babel/traverse@^7.25.9", "@babel/traverse@^7.26.10", "@babel/traverse@^7.26.5", "@babel/traverse@^7.26.8", "@babel/traverse@^7.27.0":
+"@babel/traverse--for-generate-function-map@npm:@babel/traverse@^7.25.3", "@babel/traverse@^7.25.3", "@babel/traverse@^7.25.9", "@babel/traverse@^7.26.10", "@babel/traverse@^7.26.5", "@babel/traverse@^7.26.8", "@babel/traverse@^7.27.0":
   version "7.27.0"
   resolved "https://registry.yarnpkg.com/@babel/traverse/-/traverse-7.27.0.tgz#11d7e644779e166c0442f9a07274d02cd91d4a70"
   integrity sha512-19lYZFzYVQkkHkl4Cy4WrAVcqBkgvV2YM2TU3xG6DIwO7O3ecbDPfW3yM3bjAGcqcQHi+CCtjMR3dIEHxsd6bA==
@@ -2777,6 +2764,31 @@ color-name@^1.0.0, color-name@~1.1.4:
   version "1.1.4"
   resolved "https://registry.yarnpkg.com/color-name/-/color-name-1.1.4.tgz#c2a09a87acbde69543de6f63fa3995c826c536a2"
   integrity sha512-dOy+3AuW3a2wNbZHIuMZpTcgjGuLU/uBL/ubcZF9OXbDo8ff4O8yVp5Bf0efS8uEoYo5q4Fx7dY9OgQGXgAsQA==
+
+color-name@^2.0.0:
+  version "2.0.0"
+  resolved "https://registry.yarnpkg.com/color-name/-/color-name-2.0.0.tgz#03ff6b1b5aec9bb3cf1ed82400c2790dfcd01d2d"
+  integrity sha512-SbtvAMWvASO5TE2QP07jHBMXKafgdZz8Vrsrn96fiL+O92/FN/PLARzUW5sKt013fjAprK2d2iCn2hk2Xb5oow==
+
+color-parse@^2.0.0:
+  version "2.0.2"
+  resolved "https://registry.yarnpkg.com/color-parse/-/color-parse-2.0.2.tgz#37b46930424924060988edf25b24e6ffb4a1dc3f"
+  integrity sha512-eCtOz5w5ttWIUcaKLiktF+DxZO1R9KLNY/xhbV6CkhM7sR3GhVghmt6X6yOnzeaM24po+Z9/S1apbXMwA3Iepw==
+  dependencies:
+    color-name "^2.0.0"
+
+color-rgba@^3.0.0:
+  version "3.0.0"
+  resolved "https://registry.yarnpkg.com/color-rgba/-/color-rgba-3.0.0.tgz#77090bdcdb2951c1735e20099ddd50401675375b"
+  integrity sha512-PPwZYkEY3M2THEHHV6Y95sGUie77S7X8v+h1r6LSAPF3/LL2xJ8duUXSrkic31Nzc4odPwHgUbiX/XuTYzQHQg==
+  dependencies:
+    color-parse "^2.0.0"
+    color-space "^2.0.0"
+
+color-space@^2.0.0:
+  version "2.3.1"
+  resolved "https://registry.yarnpkg.com/color-space/-/color-space-2.3.1.tgz#1c13ca8ee017585807e65c76de3870cdc7c4fdfb"
+  integrity sha512-5DJdKYwoDji3ik/i0xSn+SiwXsfwr+1FEcCMUz2GS5speGCfGSbBMOLd84SDUBOuX8y4CvdFJmOBBJuC4wp7sQ==
 
 color-string@^1.9.0:
   version "1.9.1"
@@ -5862,6 +5874,13 @@ react-native-permissions@^5.3.0:
   resolved "https://registry.yarnpkg.com/react-native-permissions/-/react-native-permissions-5.3.0.tgz#987ec347d312306b4aeca548996a16f6f129992d"
   integrity sha512-krDaImQ7J8tm7P+GqKmTIkojNqdO0E6v2x7TOlX/7rRc/zlpoqRXsN7210ecChcUmEOJEH6wzPcemYq+7AfZiw==
 
+react-native-photo-manipulator@^1.9.2:
+  version "1.9.2"
+  resolved "https://registry.yarnpkg.com/react-native-photo-manipulator/-/react-native-photo-manipulator-1.9.2.tgz#d42cddfcbcac0be91f3aa0852e3d5d4fa23ec5c0"
+  integrity sha512-Q3Y3mGAIYTk0QhXYvCb1/m6amkFZ2ieUvkOkHaOa/zWECyGP5Pi+z0Z0PvtM2acdb2oBv7SZyeVg9W4g3ZggQw==
+  dependencies:
+    color-rgba "^3.0.0"
+
 react-native-reanimated@^3.17.1:
   version "3.17.1"
   resolved "https://registry.yarnpkg.com/react-native-reanimated/-/react-native-reanimated-3.17.1.tgz#42bed044ad046f09efcc00a80fabcc6eb18c7073"
@@ -6925,6 +6944,16 @@ vary@~1.1.2:
   version "1.1.2"
   resolved "https://registry.yarnpkg.com/vary/-/vary-1.1.2.tgz#2299f02c6ded30d4a5961b0b9f74524a18f634fc"
   integrity sha512-BNGbWLfd0eUPabhkXUVm0j8uuvREyTh5ovRa/dyow/BqAbZJyC+5fU+IzQOzmAKzYqYRAISoRhdQr3eIZ/PXqg==
+
+vision-camera-cropper@^1.3.1:
+  version "1.3.1"
+  resolved "https://registry.yarnpkg.com/vision-camera-cropper/-/vision-camera-cropper-1.3.1.tgz#0576ce1b36ca2c838fc7f3ccebfe4a62be16fa02"
+  integrity sha512-XiaPgzMpHRUaUe7yg1pDcQPMqNWTig1u7gDLq9muTKQeCZ06DlFtzm8+bs7O+vLSy8/CUAtBc6WjPGfAk7ZV7g==
+
+vision-camera-resize-plugin@^3.2.0:
+  version "3.2.0"
+  resolved "https://registry.yarnpkg.com/vision-camera-resize-plugin/-/vision-camera-resize-plugin-3.2.0.tgz#57942b5603bffc613938fc8648fd94bba7acdaac"
+  integrity sha512-OR/rU6cwnSoFs3zN8EtAiomwtoXBzQsGnQxfUY5wfQ9WcssLY+Hrcdp/pr2qY3fsHokKtYZHeF43eXNaMyBi6g==
 
 vlq@^1.0.0:
   version "1.0.1"
