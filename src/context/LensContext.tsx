@@ -9,7 +9,7 @@ interface LensContextType {
 
 export const LensContext = createContext<LensContextType | null>(null);
 
-export const LensContextContextprovider = ({ children }:any) => {
+export const LensContextprovider = ({ children }:any) => {
 
   const [capturedImage, setCapturedImage] = React.useState<string>('')
   const [scrollEnabled, setScrollEnabled] = React.useState<boolean>(true); 
