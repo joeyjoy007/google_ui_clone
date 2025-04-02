@@ -130,7 +130,7 @@ const GoogleLensUI = () => {
         flexSecond.value = interpolate(
           newOffset,
           [-MAX_DRAG, MAX_DRAG],
-          [0.85, 0.4],
+          [0.85, 0.6],
           Extrapolation.CLAMP,
         );
 
@@ -141,7 +141,7 @@ const GoogleLensUI = () => {
         );
         croppedImageTranslateY.value = interpolate(
           flexSecond.value,
-          [0.4, 0.6, 0.85],
+          [0.6, 0.6, 0.85],
           [1, 0.5, 0],
         );
         showGoogleStuff.value = interpolate(
