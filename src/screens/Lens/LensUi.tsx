@@ -70,7 +70,6 @@ const GoogleLensUI = () => {
         bottomContainerOpacity.value =1
         bottomContainerScale.value =1
         setExpanded(false);
-        setCheckScrollingdisabled(false)
         setScrollEnabled(false);
         setCapturedImage(null);
       };
@@ -118,9 +117,6 @@ const GoogleLensUI = () => {
   const panGesture = Gesture.Pan()
     .onBegin(event => {
       startY.value = offsetY.value;
-      if(flexSecond.value == .85){
-        runOnJS(setCheckScrollingdisabled)(false)
-      }
     })
     .onChange(event => {
       const translationY = event.translationY;
@@ -164,16 +160,13 @@ const GoogleLensUI = () => {
       // When the offset is greater than or equal to -MAX_DRAG, enable scrolling
       if (offsetY.value <= -MAX_DRAG) {
         'worklet';
-        if(checkScrollingdisabled){
-          runOnJS(setScrollEnabled)(false);
-        }else{
           runOnJS(setScrollEnabled)(true);
-        }
+        
       } else {
         'worklet';
         console.log("IN HERE");
         runOnJS(setScrollEnabled)(false);
-        
+
 
       }
     });
@@ -186,7 +179,6 @@ const GoogleLensUI = () => {
       // Only disable scroll when the user reaches the top (within threshold)
       if (scrollY <= 5 && scrollEnabled) {
         runOnJS(setScrollEnabled)(false);
-        runOnJS(setCheckScrollingdisabled)(true);
         console.log("Scrolling disabled at top");
       }
     
