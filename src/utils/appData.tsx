@@ -289,3 +289,5 @@ export const mockSearchData = [
     ],
   },
 ];
+
+export const searchTopBarData = ["All","Products","Visual matches", "About this image"]
