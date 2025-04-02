@@ -17,7 +17,7 @@ import {useFocusEffect} from '@react-navigation/native';
 import {Gesture, GestureDetector} from 'react-native-gesture-handler';
 import {Camera, useCameraDevices} from 'react-native-vision-camera';
 
-import {deviceHeight} from '../../utils/styles';
+import {deviceHeight,} from '../../utils/styles';
 import {RESULTS} from 'react-native-permissions';
 import FocusCorners from './FocusCorners';
 import LensFooter from './LensFooter';
@@ -31,6 +31,8 @@ const GoogleLensUI = () => {
   const [scrollEnabled, setScrollEnabled] = useState(false);
   const [hasPermission, setHasPermission] = useState(false);
   const [capturedImage, setCapturedImage] = useState(null);
+
+  
 
   const MAX_DRAG = 100;
 
@@ -46,6 +48,8 @@ const GoogleLensUI = () => {
   const bottomContainerTopBar = useSharedValue(0);
   const showGoogleStuff = useSharedValue(0);
   const croppedImageTranslateY = useSharedValue(1);
+
+
 
   useFocusEffect(
     useCallback(() => {
@@ -68,6 +72,7 @@ const GoogleLensUI = () => {
         setExpanded(false);
         setScrollEnabled(false);
         setCapturedImage(null);
+        
       };
     }, []),
   );

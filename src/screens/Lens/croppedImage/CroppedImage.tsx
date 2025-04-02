@@ -1,23 +1,30 @@
 import React from 'react';
-import {View, StyleSheet, TextStyle, TextInput} from 'react-native';
+import {View, StyleSheet, TextStyle, TextInput, Pressable} from 'react-native';
 import Animated, {useAnimatedStyle, withTiming} from 'react-native-reanimated';
 import {GoogleMicSvg, GoogleSvg} from '../../../assets/svg';
 import {colors} from '../../../utils/colors';
 import {deviceWidth, fontFamily} from '../../../utils/styles';
 import {MaterialIcons} from '../../../utils/icons';
 import CropTool from '../croptool/CropTool';
+import { useNavigation } from '@react-navigation/native';
+import { navigationKey } from '../../../utils/navigation';
 
 const CroppedImage = ({
   capturedImage,
   translateY,
   showTextBox,
+
 }: {
   capturedImage: string;
   translateY: {value: number};
   showTextBox: {value: number};
+
 }) => {
-  const {mainContainer, googleStuffView, textInputStyle, iconStyle, textStyle} =
+  const {mainContainer, googleStuffView, textInputStyle, iconStyle, textStyle,image,searchBarImage} =
     styles;
+
+
+    const navigation = useNavigation()
 
   const animatedStyle = useAnimatedStyle(() => {
     return {
@@ -36,11 +43,10 @@ const CroppedImage = ({
       <Animated.View style={[mainContainer, animatedStyle]}>
         <Animated.Image
           source={{uri: `file://${capturedImage}`}}
-          style={[ styles.image]}
+          style={[ image]}
           />
           <CropTool 
-          animatedStyle={animatedStyle}
-          capturedImage={`file://${capturedImage}`}/>
+          />
       </Animated.View>
 
       <Animated.View style={[googleStuffView, animateGoogleStuff]}>
@@ -51,13 +57,20 @@ const CroppedImage = ({
           <View style={iconStyle}>
             <MaterialIcons name="search" size={25} />
 
+            <Animated.Image
+                source={{uri: `file://${capturedImage}`}}
+                style={[searchBarImage]}
+            />
+
             <TextInput
               placeholder="Add to your search"
               style={textStyle}
               placeholderTextColor={colors.black}
             />
           </View>
-          <GoogleMicSvg />
+          <Pressable onPress={()=>navigation.navigate(navigationKey.SPEECH)}>
+             <GoogleMicSvg />
+          </Pressable>
         </Animated.View>
       </Animated.View>
     </>
@@ -82,6 +95,7 @@ const styles = StyleSheet.create({
     alignItems: 'center',
     justifyContent: 'center',
   },
+  searchBarImage:{width:50,height:30,marginLeft:3,borderRadius:5},
   iconStyle: {flexDirection: 'row', alignItems: 'center'},
   textInputStyle: {
     height: 50,

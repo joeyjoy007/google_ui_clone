@@ -13,6 +13,8 @@ import Animated, {
   useAnimatedStyle,
   withTiming,
 } from 'react-native-reanimated';
+import { useNavigation } from '@react-navigation/native';
+import { navigationKey } from '../../utils/navigation';
 
 interface IBottomContainer {
   capturedImage: string;
@@ -40,6 +42,8 @@ const BottomContainer = ({
     capturedGoogleStyle,
   } = styles;
 
+  const navigation = useNavigation()
+
   const opacityStyle = useAnimatedStyle(() => ({
     opacity: withTiming(opacity.value),
     height: interpolate(opacity.value, [0, 1], [0, 50], Extrapolation.CLAMP),
@@ -60,6 +64,7 @@ const BottomContainer = ({
               <GoogleLogo />
               <TextInput
                 placeholder="Add to your search"
+                editable={false}
                 style={{
                   fontFamily: fontFamily.ProductSansMedium,
                   marginLeft: 5,
@@ -67,7 +72,9 @@ const BottomContainer = ({
                 placeholderTextColor={colors.black}
               />
             </View>
-            <GoogleMicSvg />
+            <Pressable onPress={()=>navigation.navigate(navigationKey.SPEECH)}>
+                <GoogleMicSvg />
+            </Pressable>
           </Animated.View>
         )}
         <Animated.View style={[bottomContainer, opacityStyle]}>

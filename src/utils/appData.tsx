@@ -26,6 +26,7 @@ import {
   MaterialCommunityIcons,
   MaterialIcons,
 } from './icons';
+import { deviceHeight, deviceWidth } from './styles';
 
 export const bottomSheetList = [
   {
@@ -291,3 +292,13 @@ export const mockSearchData = [
 ];
 
 export const searchTopBarData = ["All","Products","Visual matches", "About this image"]
+
+
+export const cropToolDimensions={
+  MIN_WIDTH : 100,
+  MIN_HEIGHT : 100,
+  MAX_WIDTH :deviceWidth - 50,
+  MAX_HEIGHT : deviceHeight / 1.6,
+  INITIAL_WIDTH : 200,
+  INITIAL_HEIGHT : 250
+}
