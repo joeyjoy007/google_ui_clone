@@ -71,7 +71,7 @@ export default QuickFeed;
 
 const styles = StyleSheet.create({
   mainContainer: {marginTop: 10, flex: 1, justifyContent: 'space-between'},
-  container: {flexDirection: 'row', gap: 7.5},
+  container: {flexDirection: 'row', justifyContent:'space-between',width:'100%'},
   iconStyle: {
     height: 50,
     alignItems: 'center',
