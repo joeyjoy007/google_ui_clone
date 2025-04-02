@@ -20,7 +20,7 @@ const QuickTodayFeed = () => {
   
   return (
     <View style={mainContainer}>
-      <ScrollView horizontal>
+      <ScrollView showsHorizontalScrollIndicator={false} horizontal>
         <View
           style={todayFeedBox}>
           {quickTodayFeed?.map((e, i: number) => {
