@@ -2,7 +2,7 @@ import { Image, StyleSheet, Text, View } from 'react-native'
 import React from 'react'
 import { FlatList } from 'react-native-gesture-handler'
 import { mockSearchData } from '../../../utils/appData'
-import { deviceWidth } from '../../../utils/styles'
+import { deviceWidth, fontFamily } from '../../../utils/styles'
 import { colors } from '../../../utils/colors'
 import { MyntraSvg } from '../../../assets/svg'
 import NormalText from '../../../components/TextInputs/NormalText'
@@ -31,7 +31,7 @@ const SearchScreen = ({scrollEnabled,setScrolledEnabled,searchListAnimation}:{sc
                <View style={{gap:5}}>
                <View style={{flexDirection:'row',alignItems:'center',gap:8,paddingHorizontal:5}}>
                <Image source={source_icon}style={{width:20,height:20,resizeMode:'contain'}}/>
-               <NormalText text={source}/>
+               <NormalText  text={source}/>
                </View>
                <View>
                   <BoldText style={{width:deviceWidth/2.2}} numberOfLines={2} text={snippet}/>

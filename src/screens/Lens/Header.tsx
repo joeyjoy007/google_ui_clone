@@ -6,14 +6,21 @@ import {fontFamily} from '../../utils/styles';
 import {useSafeAreaInsets} from 'react-native-safe-area-context';
 import {useNavigation} from '@react-navigation/native';
 import { MaterialCommunityIcons, MaterialIcons } from '../../utils/icons';
+import Animated, { useAnimatedStyle, withTiming } from 'react-native-reanimated';
 
-const LensHeader = ({capturedImage}: {capturedImage: string}) => {
+const LensHeader = ({capturedImage,translateY}: {capturedImage: string,translateY?:{value:number}}) => {
   const insets = useSafeAreaInsets();
   const {topBar, title, iconRow} = styles;
   const navigation = useNavigation();
 
+   const animatedStyle = useAnimatedStyle(()=>{
+      return {
+        opacity:withTiming(translateY.value),
+      }
+    })
+
   return (
-    <View style={[topBar, {top: 15 + insets.top}]}>
+    <Animated.View style={[topBar, {top: 15 + insets.top},animatedStyle]}>
       <View style={iconRow}>
         <TouchableOpacity
           style={{zIndex: 99999999}}
@@ -57,7 +64,7 @@ const LensHeader = ({capturedImage}: {capturedImage: string}) => {
           />
         </TouchableOpacity>
       </View>
-    </View>
+    </Animated.View>
   );
 };
 

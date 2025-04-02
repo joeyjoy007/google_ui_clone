@@ -40,7 +40,7 @@ const GoogleLensUI = () => {
   const [capturedImage, setCapturedImage] = useState(null);
 
 
-  const MAX_DRAG = deviceHeight*.35; 
+  const MAX_DRAG = deviceHeight *.4; 
 
   const devices = useCameraDevices();
   const cameraRef = useRef(null);
@@ -48,10 +48,13 @@ const GoogleLensUI = () => {
 
   const flexFirst = useSharedValue(0.9);
   const flexSecond = useSharedValue(0.1);
-  const offsetY = useSharedValue(0); // Stores last known position
+  const offsetY = useSharedValue(0); 
   const startY = useSharedValue(0);
   const bottomContainerOpacity = useSharedValue(1);
+  const bottomContainerTopBar = useSharedValue(0);
+  const showGoogleStuff = useSharedValue(0);
   const bottomContainerScale = useSharedValue(1);
+  const croppedImageTranslateY = useSharedValue(1);
 
   useFocusEffect(
     useCallback(() => {
@@ -69,6 +72,9 @@ const GoogleLensUI = () => {
         offsetY.value = 0;
         bottomContainerOpacity.value =1
         bottomContainerScale.value =1
+        bottomContainerTopBar.value = 0;
+        croppedImageTranslateY.value = 1;
+        showGoogleStuff.value = 0;
         setExpanded(false);
         setScrollEnabled(false);
         setCapturedImage(null);
@@ -123,41 +129,45 @@ const GoogleLensUI = () => {
       let newOffset = startY.value + translationY;
 
   // Restrict newOffset to stay within bounds [-MAX_DRAG, MAX_DRAG]
-  newOffset = Math.max(Math.min(newOffset, MAX_DRAG), -MAX_DRAG);
-      
+  newOffset = Math.max(Math.min(newOffset, MAX_DRAG), -MAX_DRAG); 
+
+
+
       if (expanded) {
         flexFirst.value = interpolate(
           newOffset,
-          [-MAX_DRAG, 0, MAX_DRAG], // Input range (scroll up to scroll down)
-          [0.15, 0.6, 0.9], // Output range for flexFirst
-          Extrapolation.CLAMP, // Ensures values stay within range
+          [-MAX_DRAG, 0, MAX_DRAG], 
+          [0.15, 0.6, 0.9], 
+          Extrapolation.CLAMP, 
         );
 
         flexSecond.value = interpolate(
           newOffset,
-          [-MAX_DRAG, 0, MAX_DRAG], // Input range (scroll up to scroll down)
+          [-MAX_DRAG, 0, MAX_DRAG], 
           [0.85, 0.6, 0.4],
-          Extrapolation.CLAMP, // Ensures values stay within range
+          Extrapolation.CLAMP, 
         );
 
-        bottomContainerOpacity.value = interpolate(
-          newOffset,
-          [MAX_DRAG, 0, -MAX_DRAG], // Input range (scroll up to scroll down)
-          [1, 0.5, 0],
-          Extrapolation.CLAMP, // Ensures values stay within range
-        );
+        bottomContainerOpacity.value = 
+        interpolate(newOffset, [-MAX_DRAG, 0, MAX_DRAG], [0, 0.5, 1]);
+        bottomContainerScale.value = 
+        interpolate(newOffset, [-MAX_DRAG, 0, MAX_DRAG], [0, 0.5, 1]);
+        croppedImageTranslateY.value = 
+        interpolate(flexSecond.value, [.4, 0.6, 0.85], [1, 0.5, 0]);
+        showGoogleStuff.value = 
+        interpolate(flexSecond.value, [0.8, 0.85], [0, 1]);
+              
+  bottomContainerTopBar.value = 
+  interpolate(newOffset, [-MAX_DRAG, 0, MAX_DRAG], [1, 0.5, 0]);
+
+        
       }
     })
     .onFinalize(event => {
       const newOffset = startY.value + event.translationY;
     
-      // Clamp the new offset between MAX_DRAG and -MAX_DRAG
       offsetY.value = Math.max(Math.min(newOffset, MAX_DRAG), -MAX_DRAG);
     
-      // if(flexSecond.value <.85){
-
-      // }
-      // When the offset is greater than or equal to -MAX_DRAG, enable scrolling
       if (offsetY.value <= -MAX_DRAG) {
         'worklet';
           runOnJS(setScrollEnabled)(true);
@@ -171,7 +181,6 @@ const GoogleLensUI = () => {
       }
     });
     
-    // Adjusting the search list animation to use the offset logic
     const searchListAnimation = e => {
     
       const scrollY = e.nativeEvent.contentOffset.y;
@@ -198,7 +207,7 @@ const GoogleLensUI = () => {
           flex: 1,
           marginTop: deviceHeight / 2,
         }}>
-        Camera permission is required
+        {/* Camera permission is required */}
       </Text>
     );
   if (!device) return <Text>No Camera Available</Text>;
@@ -208,8 +217,14 @@ const GoogleLensUI = () => {
       <Animated.View style={[firstViewStyle]}>
         {capturedImage ? (
           <>
-            <CroppedImage capturedImage={capturedImage} />
-            <LensHeader capturedImage={capturedImage} />
+            <CroppedImage
+            translateY={croppedImageTranslateY}
+            showTextBox={showGoogleStuff}
+            capturedImage={capturedImage} />
+           <LensHeader 
+            translateY={croppedImageTranslateY}
+
+           capturedImage={capturedImage} />
           </>
         ) : (
           <>
@@ -225,7 +240,10 @@ const GoogleLensUI = () => {
             setCapturedImage={setCapturedImage}
             expandView={expandView}
             takePicuture={takePicture} />
-            <LensHeader capturedImage={capturedImage} />
+            <LensHeader 
+                        translateY={{value:1}}
+
+            capturedImage={capturedImage} />
           </>
         )}
       </Animated.View>
@@ -239,8 +257,10 @@ const GoogleLensUI = () => {
               capturedImage={capturedImage}
               scrollEnabled={scrollEnabled}
               searchListAnimation={searchListAnimation}
-              opacity={bottomContainerOpacity.value}
-              scale={bottomContainerScale.value}
+              opacity={bottomContainerOpacity}
+              scale={bottomContainerScale}
+              topBar={bottomContainerTopBar}
+
             />
           </View>
         </Animated.View>

@@ -1,6 +1,5 @@
 import {
   Pressable,
-  ScrollView,
   StyleSheet,
   Text,
   TextInput,
@@ -14,36 +13,48 @@ import {GoogleLogo, GoogleMicSvg} from '../../assets/svg';
 import Divider from '../../components/Divider';
 import SearchScreen from './searchScreen/SearchScreen';
 import SearchTopBar from './SearchTopBar';
-import Animated, { useAnimatedStyle, withTiming } from 'react-native-reanimated';
+import Animated, { Extrapolation, interpolate, useAnimatedStyle, withTiming } from 'react-native-reanimated';
 
 const BottomContainer = ({
   capturedImage,
   scrollEnabled,
   setScrolledEnabled,
   searchListAnimation,
-  opacity
+  opacity,
+  scale,
+  topBar
 }: {
   capturedImage: string;
   scrollEnabled: boolean;
   setScrolledEnabled: any;
   searchListAnimation: any;
-  opacity:number
+  opacity:{value:number}
+  scale:{value:number}
+  topBar:{value:number}
 }) => {
   const [buttonState, setButtonState] = React.useState(1);
   const {childContainer, bottomContainer, actionButton, buttonText} = styles;
 
 
-  const opacityStyle = useAnimatedStyle(()=>{
-    return {
-      opacity:withTiming(opacity)
-    }
-  })
+
+  const opacityStyle = useAnimatedStyle(()=>({
+      opacity:withTiming(opacity.value),
+      height:interpolate(opacity.value, [0, 1], [0, 50], Extrapolation.CLAMP),
+      transform:[{scale:scale.value}],
+  }))
+
+  const getTopBar = useAnimatedStyle(()=>({
+      opacity:withTiming(topBar.value),
+      height:interpolate(topBar.value, [0, 1], [0, 23], Extrapolation.CLAMP),
+      transform:[{scale:topBar.value}],
+
+  }))
   return (
     <>
       <View style={{width: '100%', flex: 1, marginTop: capturedImage ? 0 : 10}}>
         {capturedImage && (
           <Animated.View
-            style={[opacityStyle,{
+            style={[{
               height: 50,
               flexDirection: 'row',
               borderRadius: 25,
@@ -51,7 +62,7 @@ const BottomContainer = ({
               alignItems: 'center',
               justifyContent: 'space-between',
               paddingHorizontal: 20,
-            }]}>
+            },opacityStyle]}>
             <View style={{flexDirection: 'row'}}>
               <GoogleLogo />
               <TextInput
@@ -66,8 +77,8 @@ const BottomContainer = ({
             <GoogleMicSvg />
           </Animated.View>
         )}
-        <View style={bottomContainer}>
-          <View style={childContainer}>
+        <Animated.View style={[bottomContainer, opacityStyle]}>
+          <View style={[childContainer]}>
             {lensBottomData?.map((e, i) => {
               return (
                 <Pressable
@@ -98,11 +109,11 @@ const BottomContainer = ({
               );
             })}
           </View>
-        </View>
+        </Animated.View>
 
-        <View>
+        <Animated.View style={[getTopBar,{marginTop:5}]}>
           <SearchTopBar />
-        </View>
+        </Animated.View>
         <Divider top={20} />
         <View style={{marginTop: 10}}>
           <SearchScreen
