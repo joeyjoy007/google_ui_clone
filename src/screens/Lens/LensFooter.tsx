@@ -1,4 +1,5 @@
 import {
+  Image,
   Pressable,
   StyleSheet,
   TouchableOpacity,
@@ -9,6 +10,7 @@ import {colors} from '../../utils/colors';
 import {fontFamily} from '../../utils/styles';
 import {MaterialIcons} from '../../utils/icons';
 import {launchImageLibrary} from 'react-native-image-picker';
+import { googlePhotos } from '../../assets/images';
 
 const LensFooter = ({
   takePicuture,
@@ -19,7 +21,7 @@ const LensFooter = ({
   setCapturedImage: (uri: string) => void;
   expandView:()=>void
 }) => {
-  const {bottomBar,parentGallary,childGallary,photoBackgroundButton,photoForeGroundButton,extraViewButton} = styles;
+  const {bottomBar,parentGallary,photoBackgroundButton,photoForeGroundButton,extraViewButton,borderShadow} = styles;
 
   const openGallary = async () => {
     try {
@@ -48,12 +50,12 @@ const LensFooter = ({
   };
   return (
     <View style={bottomBar}>
-      <View
+      <View style={borderShadow}/>
+      <TouchableOpacity
+        onPress={openGallary}
         style={parentGallary}>
-        <TouchableOpacity
-          onPress={openGallary}
-          style={childGallary}></TouchableOpacity>
-      </View>
+          <Image source={googlePhotos} style={{width:'100%',height:'100%'}}/>
+      </TouchableOpacity>
 
       <View
         style={photoBackgroundButton}>
@@ -78,24 +80,13 @@ export default LensFooter;
 
 const styles = StyleSheet.create({
   parentGallary:{
-    width: 50,
+    width: 40,
     bottom: 16,
     borderColor: colors.white,
     borderRadius: 10,
-    borderWidth: 1,
-    height: 50,
+    height: 40,
     left: 50,
-  },
-  childGallary:{
-    width: 40,
-    top: 9,
-    borderColor: colors.white,
-    borderBottomLeftRadius: 10,
-    borderWidth: 1,
-    height: 45,
-    right: 6,
-    borderTopWidth: 0,
-    borderRightWidth: 0,
+    overflow:'hidden'
   },
   photoBackgroundButton:{
     position: 'absolute',
@@ -105,6 +96,7 @@ const styles = StyleSheet.create({
     borderColor: '#fff',
     alignItems: 'center',
   },
+  borderShadow:{borderWidth:1,height:35,width:35,position:'absolute',left:46,bottom:12,borderTopWidth:0,borderRightWidth:0,borderBottomLeftRadius:13,borderColor:colors.white},
   photoForeGroundButton:{
     height: 70,
     width: 70,

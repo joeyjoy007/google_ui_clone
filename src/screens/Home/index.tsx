@@ -10,7 +10,7 @@ import {colors} from '../../utils/colors';
 import LinearGradient from 'react-native-linear-gradient';
 import {useFocusEffect} from '@react-navigation/native';
 const HomeScreen = () => {
-  const {googleSvgStyle, mainContainer, divider, singlePadding} = styles;
+  const {googleSvgStyle, mainContainer, divider, singlePadding,quickFeedStyle} = styles;
 
   useFocusEffect(
     useCallback(() => {
@@ -35,7 +35,9 @@ const HomeScreen = () => {
             <GoogleSvg width={150} />
           </View>
           <SearchBar />
+          <View style={quickFeedStyle}>
           <QuickFeed />
+          </View>
         </View>
         <View style={divider} />
         <QuickTodayFeed />
@@ -71,4 +73,5 @@ const styles = StyleSheet.create({
     borderColor: 'grey',
     opacity: 0.2,
   },
+  quickFeedStyle:{display:'flex',flexDirection:'row',justifyContent:'center',alignItems:'center'}
 });
