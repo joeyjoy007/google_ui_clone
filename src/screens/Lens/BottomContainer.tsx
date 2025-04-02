@@ -1,10 +1,4 @@
-import {
-  Pressable,
-  StyleSheet,
-  Text,
-  TextInput,
-  View,
-} from 'react-native';
+import {Pressable, StyleSheet, Text, TextInput, View} from 'react-native';
 import React from 'react';
 import {lensBottomData} from '../../utils/appData';
 import {fontFamily} from '../../utils/styles';
@@ -13,56 +7,55 @@ import {GoogleLogo, GoogleMicSvg} from '../../assets/svg';
 import Divider from '../../components/Divider';
 import SearchScreen from './searchScreen/SearchScreen';
 import SearchTopBar from './SearchTopBar';
-import Animated, { Extrapolation, interpolate, useAnimatedStyle, withTiming } from 'react-native-reanimated';
+import Animated, {
+  Extrapolation,
+  interpolate,
+  useAnimatedStyle,
+  withTiming,
+} from 'react-native-reanimated';
+
+interface IBottomContainer {
+  capturedImage: string;
+  scrollEnabled: boolean;
+  searchListAnimation: any;
+  opacity: {value: number};
+  scale: {value: number};
+  topBar: {value: number};
+}
 
 const BottomContainer = ({
   capturedImage,
   scrollEnabled,
-  setScrolledEnabled,
   searchListAnimation,
   opacity,
   scale,
-  topBar
-}: {
-  capturedImage: string;
-  scrollEnabled: boolean;
-  setScrolledEnabled: any;
-  searchListAnimation: any;
-  opacity:{value:number}
-  scale:{value:number}
-  topBar:{value:number}
-}) => {
+  topBar,
+}: IBottomContainer) => {
   const [buttonState, setButtonState] = React.useState(1);
-  const {childContainer, bottomContainer, actionButton, buttonText} = styles;
+  const {
+    childContainer,
+    bottomContainer,
+    actionButton,
+    buttonText,
+    capturedGoogleStyle,
+  } = styles;
 
+  const opacityStyle = useAnimatedStyle(() => ({
+    opacity: withTiming(opacity.value),
+    height: interpolate(opacity.value, [0, 1], [0, 50], Extrapolation.CLAMP),
+    transform: [{scale: scale.value}],
+  }));
 
-
-  const opacityStyle = useAnimatedStyle(()=>({
-      opacity:withTiming(opacity.value),
-      height:interpolate(opacity.value, [0, 1], [0, 50], Extrapolation.CLAMP),
-      transform:[{scale:scale.value}],
-  }))
-
-  const getTopBar = useAnimatedStyle(()=>({
-      opacity:withTiming(topBar.value),
-      height:interpolate(topBar.value, [0, 1], [0, 23], Extrapolation.CLAMP),
-      transform:[{scale:topBar.value}],
-
-  }))
+  const getTopBar = useAnimatedStyle(() => ({
+    opacity: withTiming(topBar.value),
+    height: interpolate(topBar.value, [0, 1], [0, 35], Extrapolation.CLAMP),
+    transform: [{scale: topBar.value}],
+  }));
   return (
     <>
       <View style={{width: '100%', flex: 1, marginTop: capturedImage ? 0 : 10}}>
         {capturedImage && (
-          <Animated.View
-            style={[{
-              height: 50,
-              flexDirection: 'row',
-              borderRadius: 25,
-              backgroundColor: colors.searchBarColor,
-              alignItems: 'center',
-              justifyContent: 'space-between',
-              paddingHorizontal: 20,
-            },opacityStyle]}>
+          <Animated.View style={[capturedGoogleStyle, opacityStyle]}>
             <View style={{flexDirection: 'row'}}>
               <GoogleLogo />
               <TextInput
@@ -111,14 +104,13 @@ const BottomContainer = ({
           </View>
         </Animated.View>
 
-        <Animated.View style={[getTopBar,{marginTop:5}]}>
+        <Animated.View style={[getTopBar, {paddingTop:10}]}>
           <SearchTopBar />
         </Animated.View>
-        <Divider top={20} />
+        <Divider top={10} />
         <View style={{marginTop: 10}}>
           <SearchScreen
             scrollEnabled={scrollEnabled}
-            setScrolledEnabled={setScrolledEnabled}
             searchListAnimation={searchListAnimation}
           />
         </View>
@@ -137,6 +129,16 @@ const styles = StyleSheet.create({
     paddingTop: 15,
     width: '100%',
     // flex: 1,
+  },
+  capturedGoogleStyle: {
+    height: 50,
+    flexDirection: 'row',
+    borderRadius: 25,
+    backgroundColor: colors.searchBarColor,
+    alignItems: 'center',
+    justifyContent: 'space-between',
+    paddingHorizontal: 20,
+    marginTop: 10,
   },
   childContainer: {
     flexDirection: 'row',
