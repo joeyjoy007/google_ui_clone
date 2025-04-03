@@ -40,7 +40,6 @@ const Speech = () => {
     } catch (error) {
       setError(true);
       setText('Tap the mic, then speak into your device for quick answers');
-      console.log({error});
     }
   };
 

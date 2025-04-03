@@ -1,10 +1,5 @@
 import React, {useState, useCallback, useRef, useContext} from 'react';
-import {
-  View,
-  StyleSheet,
-  StatusBar,
-  Text,
-} from 'react-native';
+import {View, StyleSheet, StatusBar, Text} from 'react-native';
 import Animated, {
   useSharedValue,
   useAnimatedStyle,
@@ -17,29 +12,36 @@ import {useFocusEffect} from '@react-navigation/native';
 import {Gesture, GestureDetector} from 'react-native-gesture-handler';
 import {Camera, useCameraDevices} from 'react-native-vision-camera';
 
-import {deviceHeight, deviceWidth,} from '../../utils/styles';
+import {deviceHeight, deviceWidth} from '../../utils/styles';
 import {RESULTS} from 'react-native-permissions';
 import FocusCorners from './FocusCorners';
 import LensFooter from './LensFooter';
 import LensHeader from './Header';
 import BottomContainer from './BottomContainer';
 import CroppedImage from './croppedImage/CroppedImage';
-import { CroptoolContext } from '../../context/CropToolContext';
-import { cropToolDimensions } from '../../utils/appData';
-
+import {CroptoolContext} from '../../context/CropToolContext';
+import {cropToolDimensions} from '../../utils/appData';
 
 const GoogleLensUI = () => {
-
-  const{isSecondViewScrolling,imageScale,boxX,boxY,boxWidth,boxHeight,setIsSecondViewScrolling,storedXValue,yStored}:any = useContext(CroptoolContext)
+  const {
+    imageScale,
+    boxX,
+    boxY,
+    boxWidth,
+    boxHeight,
+    setIsSecondViewScrolling,
+    storedXValue,
+    yStored,
+    storedYHeight,
+    storedXWidth,
+  }: any = useContext(CroptoolContext);
 
   const [expanded, setExpanded] = useState(false);
   const [scrollEnabled, setScrollEnabled] = useState(false);
   const [hasPermission, setHasPermission] = useState(false);
   const [capturedImage, setCapturedImage] = useState(null);
 
-  
-
-  const MAX_DRAG = deviceHeight*.25;
+  const MAX_DRAG = 200;
 
   const devices = useCameraDevices();
   const cameraRef = useRef(null);
@@ -54,8 +56,6 @@ const GoogleLensUI = () => {
   const showGoogleStuff = useSharedValue(0);
   const croppedImageTranslateY = useSharedValue(1);
 
-
-
   useFocusEffect(
     useCallback(() => {
       StatusBar.setBarStyle('light-content');
@@ -68,17 +68,24 @@ const GoogleLensUI = () => {
         StatusBar.setTranslucent(false);
         flexFirst.value = 0.9;
         flexSecond.value = 0.1;
-        offsetY.value = 0; 
-        startY.value = 0; 
+        offsetY.value = 0;
+        startY.value = 0;
         bottomContainerOpacity.value = 1;
         bottomContainerTopBar.value = 0;
         showGoogleStuff.value = 0;
         croppedImageTranslateY.value = 1;
+        imageScale.value = 1;
+        boxX.value = (deviceWidth - cropToolDimensions.INITIAL_WIDTH) / 2;
+        boxY.value =
+          (cropToolDimensions.MAX_HEIGHT - cropToolDimensions.INITIAL_HEIGHT) /
+          2;
+        boxWidth.value = cropToolDimensions.INITIAL_WIDTH;
+        boxHeight.value = cropToolDimensions.INITIAL_HEIGHT;
+        setIsSecondViewScrolling(false);
+
         setExpanded(false);
         setScrollEnabled(false);
         setCapturedImage(null);
-        imageScale.value = 1
-        
       };
     }, []),
   );
@@ -125,7 +132,8 @@ const GoogleLensUI = () => {
     })
     .onChange(event => {
       const translationY = event.translationY;
-      let newOffset = startY.value + translationY;
+      let newOffset =
+        (startY.value == 0 ? MAX_DRAG : startY.value) + translationY;
 
       // Restrict newOffset to stay within bounds [-MAX_DRAG, MAX_DRAG]
       newOffset = Math.max(Math.min(newOffset, MAX_DRAG), -MAX_DRAG);
@@ -147,19 +155,32 @@ const GoogleLensUI = () => {
         boxX.value = interpolate(
           flexSecond.value,
           [0.6, 0.8],
-          [ storedXValue,0 ],
+          [storedXValue, 50],
           Extrapolation.CLAMP,
         );
         boxY.value = interpolate(
           flexSecond.value,
           [0.6, 0.8],
-          [ yStored,0 ],
+          [yStored, 65],
+          Extrapolation.CLAMP,
+        );
+
+        boxWidth.value = interpolate(
+          flexSecond.value,
+          [0.6, 0.8],
+          [storedXWidth, 70],
+          Extrapolation.CLAMP,
+        );
+        boxHeight.value = interpolate(
+          flexSecond.value,
+          [0.6, 0.8],
+          [storedYHeight, 70],
           Extrapolation.CLAMP,
         );
         imageScale.value = interpolate(
           flexSecond.value,
-          [0.6, 0.85],
-          [ 1,0],
+          [0.6, 0.8],
+          [1, 0],
           Extrapolation.CLAMP,
         );
 
@@ -186,11 +207,11 @@ const GoogleLensUI = () => {
         );
 
         if (flexSecond.value > 0.6) {
-          'worklet'
-          runOnJS(setIsSecondViewScrolling)(true)
+          ('worklet');
+          runOnJS(setIsSecondViewScrolling)(true);
         } else {
-          'worklet'
-          runOnJS(setIsSecondViewScrolling)(false)
+          ('worklet');
+          runOnJS(setIsSecondViewScrolling)(false);
         }
       }
     })
@@ -204,7 +225,6 @@ const GoogleLensUI = () => {
         runOnJS(setScrollEnabled)(true);
       } else {
         ('worklet');
-        console.log('IN HERE');
         runOnJS(setScrollEnabled)(false);
       }
     });
@@ -233,7 +253,7 @@ const GoogleLensUI = () => {
         {/* Camera permission is required */}
       </Text>
     );
-  if (!device) return ''
+  if (!device) return '';
   // <Text>No Camera Available</Text>;
   return (
     <View style={styles.container}>
@@ -266,7 +286,10 @@ const GoogleLensUI = () => {
               expandView={expandView}
               takePicuture={takePicture}
             />
-            <LensHeader translateY={{value: 1}} capturedImage={capturedImage || ''} />
+            <LensHeader
+              translateY={{value: 1}}
+              capturedImage={capturedImage || ''}
+            />
           </>
         )}
       </Animated.View>
@@ -276,7 +299,7 @@ const GoogleLensUI = () => {
         <Animated.View style={[secondViewStyle]}>
           <View style={{flex: 1}}>
             <BottomContainer
-              capturedImage={capturedImage || '' }
+              capturedImage={capturedImage || ''}
               scrollEnabled={scrollEnabled}
               searchListAnimation={searchListAnimation}
               opacity={bottomContainerOpacity}
