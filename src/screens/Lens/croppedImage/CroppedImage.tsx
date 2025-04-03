@@ -1,13 +1,16 @@
-import React from 'react';
-import {View, StyleSheet, TextStyle, TextInput, Pressable} from 'react-native';
+import React, { useCallback } from 'react';
+import {View, StyleSheet, TextStyle, TextInput, Pressable, Image} from 'react-native';
 import Animated, {useAnimatedStyle, withTiming} from 'react-native-reanimated';
 import {GoogleMicSvg, GoogleSvg} from '../../../assets/svg';
 import {colors} from '../../../utils/colors';
 import {deviceWidth, fontFamily} from '../../../utils/styles';
 import {MaterialIcons} from '../../../utils/icons';
 import CropTool from '../croptool/CropTool';
-import { useNavigation } from '@react-navigation/native';
+import { useFocusEffect, useNavigation } from '@react-navigation/native';
 import { navigationKey } from '../../../utils/navigation';
+import ImageEditor from '@react-native-community/image-editor';
+import ImageResizer from '@bam.tech/react-native-image-resizer';
+
 
 const CroppedImage = ({
   capturedImage,
@@ -24,6 +27,10 @@ const CroppedImage = ({
     styles;
 
 
+  const [imageRealWidth, setImageRealWidth] = React.useState(1000);
+  const [imageRealHeight, setImageRealHeight] = React.useState(1000);
+  const [resizedImage, setResizedImage] = React.useState('')
+
     const navigation = useNavigation()
 
   const animatedStyle = useAnimatedStyle(() => {
@@ -38,14 +45,84 @@ const CroppedImage = ({
     };
   });
 
+   const getImageDimensions = (imageUri:string) => {
+      Image.getSize(imageUri, (width, height) => {
+        console.log(
+          "DSS",width,height
+        )
+        setImageRealHeight(height)
+        setImageRealWidth(width)
+      }, (error) => {
+        console.error("Failed to get image size: ", error);
+        setImageRealHeight(800)
+        setImageRealWidth(800)
+      
+      });
+    };
+
+    const resizeImage = async (imageUri:string) => {
+      try {
+        const maxWidth = deviceWidth; 
+        const maxHeight = 800; 
+    
+        const { width: originalWidth, height: originalHeight } = await new Promise((resolve, reject) => {
+          Image.getSize(imageUri, (width, height) => resolve({ width, height }), reject);
+        });
+    
+        let newWidth = originalWidth;
+        let newHeight = originalHeight;
+    
+        const aspectRatio = originalWidth / originalHeight;
+    
+        if (newWidth > maxWidth) {
+          newWidth = maxWidth;
+          newHeight = Math.round(newWidth / aspectRatio);
+        }
+        if (newHeight > maxHeight) {
+          newHeight = maxHeight;
+          newWidth = Math.round(newHeight * aspectRatio);
+        }
+    
+        const resizedImage = await ImageResizer.createResizedImage(
+          imageUri,
+          newWidth,
+          newHeight,
+          'JPEG',
+          100,
+          0,
+          undefined,
+          false,
+          { mode: 'contain', onlyScaleDown: true }
+        );
+    
+        console.log('Resized image URI:', resizedImage.uri);
+        setResizedImage(resizedImage.uri)
+      } catch (error) {
+        console.log('Error resizing image:', error);
+      }
+    };
+    
+
+    useFocusEffect(
+          useCallback(() => {
+              resizeImage(`file://${capturedImage}`)
+            return () => {
+           
+    
+            };
+          }, [capturedImage]),
+        );
+      
+
   return (
     <>
       <Animated.View style={[mainContainer, animatedStyle]}>
         <Animated.Image
-          source={{uri: `file://${capturedImage}`}}
+          source={{uri: resizedImage}}
           style={[ image]}
           />
           <CropTool 
+          capturedImage={resizedImage}
           />
       </Animated.View>
 

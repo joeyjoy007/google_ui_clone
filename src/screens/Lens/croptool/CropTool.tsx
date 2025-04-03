@@ -1,5 +1,5 @@
 import React, { useCallback, useContext, } from "react";
-import { View, StyleSheet, Dimensions,  } from "react-native";
+import { View, StyleSheet, Dimensions, Image, TouchableOpacity,  } from "react-native";
 import { Gesture, GestureDetector, } from "react-native-gesture-handler";
 import Animated, { useSharedValue, useAnimatedStyle } from "react-native-reanimated";
 import { colors } from "../../../utils/colors";
@@ -11,13 +11,14 @@ import { useFocusEffect } from "@react-navigation/native";
 
 
 
-const CropTool = () => {
+const CropTool = ({capturedImage}) => {
   const [imageRealWidth, setImageRealWidth] = React.useState(1000)
   const [imageRealHeight, setImageRealHeight] = React.useState(1000)
+  const [imageUri, setImageUri] = React.useState('')
 
   const {boxX,boxY,boxWidth,boxHeight}:any = useContext(CroptoolContext)
 
-   
+   console.log("YUY",capturedImage)
     
 
 
@@ -68,25 +69,28 @@ const CropTool = () => {
     top: boxY.value,
   }));
 
-  // const getImageDimensions = (imageUri:string) => {
-  //   Image.getSize(imageUri, (width, height) => {
-  //     console.log(
-  //       "DSS",width,height
-  //     )
-  //     setImageRealHeight(height)
-  //     setImageRealWidth(width)
-  //   }, (error) => {
-  //     console.error("Failed to get image size: ", error);
-  //     setImageRealHeight(800)
-  //     setImageRealWidth(800)
+  const getImageDimensions = (imageUri:string) => {
+    console.log("IMAGE URIIII",imageUri)
+    Image.getSize(imageUri, (width, height) => {
+      console.log(
+        "DSS",width,height
+      )
+      setImageRealHeight(height)
+      setImageRealWidth(width)
+    }, (error) => {
+      console.error("Failed to get image size: ", error);
+      setImageRealHeight(800)
+      setImageRealWidth(800)
     
-  //   });
-  // };
+    });
+  };
+
+  
  
 
   useFocusEffect(
       useCallback(() => {
-  
+          getImageDimensions(capturedImage)
         return () => {
         boxX.value = (deviceWidth - cropToolDimensions.INITIAL_WIDTH) / 2
         boxY.value = (cropToolDimensions.MAX_HEIGHT - cropToolDimensions.INITIAL_HEIGHT) / 2
@@ -94,7 +98,7 @@ const CropTool = () => {
         boxHeight.value = cropToolDimensions.INITIAL_HEIGHT
 
         };
-      }, []),
+      }, [capturedImage]),
     );
   
 
@@ -102,16 +106,20 @@ const CropTool = () => {
 
   const cropImage = async () => {
     try {
+      const xValue = boxX.value * (imageRealWidth / (deviceWidth));
+      const yValue = boxY.value * (imageRealHeight / cropToolDimensions.MAX_HEIGHT); 
+      const widthValue = boxWidth.value * (imageRealWidth /( deviceWidth));
+      const heightValue = boxHeight.value * (imageRealHeight / cropToolDimensions.MAX_HEIGHT);
       const cropData = {
-        offset: { x:imageRealWidth>1100? boxX.value*6:boxX.value, y:imageRealHeight>1100?boxY.value*6: boxY.value},
-        size: { width: imageRealWidth, height: imageRealHeight },
+        offset: { x:xValue,y:yValue},
+        size: { width: widthValue, height: heightValue },
         resizeMode:'contain',
         format:'png'
       };
 
       const uri = await ImageEditor.cropImage(capturedImage, cropData);
       console.log("Cropped Image URI: ", uri);
-      // setimageURI(uri.uri);
+      setImageUri(uri.uri);
     } catch (error) {
       console.error("Image cropping failed: ", error);
     }
@@ -128,6 +136,10 @@ const CropTool = () => {
             </GestureDetector>
           </Animated.View>
         </GestureDetector>
+
+        {/* <TouchableOpacity onPress={cropImage} style={{height:40,backgroundColor:'red',bottom:0,position:'absolute',width:'100%'}}>
+          <Image source={{uri:imageUri}} style={{width:200,height:200,resizeMode:'contain'}}/>
+        </TouchableOpacity> */}
         
       </View>
     </>
