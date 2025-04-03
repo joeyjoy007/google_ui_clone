@@ -1,6 +1,6 @@
 import React, { useCallback, useContext } from 'react';
 import {View, StyleSheet, TextStyle, TextInput, Pressable, Image} from 'react-native';
-import Animated, {useAnimatedStyle, withTiming} from 'react-native-reanimated';
+import Animated, {interpolateColor, useAnimatedStyle, withTiming} from 'react-native-reanimated';
 import {GoogleMicSvg, GoogleSvg} from '../../../assets/svg';
 import {colors} from '../../../utils/colors';
 import {deviceWidth, fontFamily} from '../../../utils/styles';
@@ -27,10 +27,11 @@ const CroppedImage = ({
   const {mainContainer, googleStuffView, textInputStyle, iconStyle, textStyle,image,searchBarImage} =
     styles;
 
+    const {resizedImageUri} = useContext(CroptoolContext)
 
 
-  const [imageRealWidth, setImageRealWidth] = React.useState(1000);
-  const [imageRealHeight, setImageRealHeight] = React.useState(1000);
+
+
   const [resizedImage, setResizedImage] = React.useState('')
 
 
@@ -42,26 +43,21 @@ const CroppedImage = ({
     };
   });
 
+  const colorAnimationStyle = useAnimatedStyle(() => {
+    const backgroundColor = interpolateColor(
+      translateY.value,
+      [1, 0], 
+      [colors.lightBlack, colors.transparent] 
+    );
+    return { backgroundColor };
+  });
+
   const animateGoogleStuff = useAnimatedStyle(() => {
     return {
       opacity: withTiming(showTextBox.value),
     };
   });
 
-   const getImageDimensions = (imageUri:string) => {
-      Image.getSize(imageUri, (width, height) => {
-        console.log(
-          "DSS",width,height
-        )
-        setImageRealHeight(height)
-        setImageRealWidth(width)
-      }, (error) => {
-        console.error("Failed to get image size: ", error);
-        setImageRealHeight(800)
-        setImageRealWidth(800)
-      
-      });
-    };
 
     const resizeImage = async (imageUri:string) => {
       try {
@@ -127,10 +123,11 @@ const CroppedImage = ({
           source={{uri: resizedImage}}
           style={[ image]}
           />
-          <CropTool 
-          capturedImage={resizedImage}
-          />
       </Animated.View>
+         <CropTool 
+          capturedImage={resizedImage}
+          colorAnimationStyle={colorAnimationStyle}
+          />
 
       <Animated.View style={[googleStuffView, animateGoogleStuff]}>
         <View style={{marginTop: 25}}>
@@ -141,7 +138,7 @@ const CroppedImage = ({
             <MaterialIcons name="search" size={25} />
 
             <Animated.Image
-                source={{uri: `file://${capturedImage}`}}
+                source={{uri: resizedImageUri||`file://${capturedImage}`}}
                 style={[searchBarImage]}
             />
 

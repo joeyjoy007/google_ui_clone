@@ -18,14 +18,14 @@ export const CroptoolContextprovider = ({ children }:any) => {
 
     const [storedXValue, setSetstoredXValue] = React.useState((deviceWidth - cropToolDimensions.INITIAL_WIDTH) / 2)
     const [yStored, yValueSet] = React.useState((cropToolDimensions.MAX_HEIGHT - cropToolDimensions.INITIAL_HEIGHT) / 2)
-
+  const [resizedImageUri, setResizedImageUri] = React.useState('')
     const [isSecondViewScrolling, setIsSecondViewScrolling] = React.useState(false)
     
   
 
   return (
     <CroptoolContext.Provider
-      value={{boxWidth,boxHeight,boxX,boxY,isSecondViewScrolling,setIsSecondViewScrolling,setSetstoredXValue,yValueSet,yStored,storedXValue,imageScale}}
+      value={{boxWidth,boxHeight,boxX,boxY,isSecondViewScrolling,setResizedImageUri,resizedImageUri,setIsSecondViewScrolling,setSetstoredXValue,yValueSet,yStored,storedXValue,imageScale}}
     >
       {children}
     </CroptoolContext.Provider>

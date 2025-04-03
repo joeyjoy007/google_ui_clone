@@ -30,10 +30,7 @@ import { cropToolDimensions } from '../../utils/appData';
 
 const GoogleLensUI = () => {
 
-  const{isSecondViewScrolling,imageScale,boxX,boxY,setIsSecondViewScrolling,storedXValue,yStored}:any = useContext(CroptoolContext)
-
-  console.log("STOREDY",yStored,storedXValue)
-
+  const{isSecondViewScrolling,imageScale,boxX,boxY,boxWidth,boxHeight,setIsSecondViewScrolling,storedXValue,yStored}:any = useContext(CroptoolContext)
 
   const [expanded, setExpanded] = useState(false);
   const [scrollEnabled, setScrollEnabled] = useState(false);
@@ -42,7 +39,7 @@ const GoogleLensUI = () => {
 
   
 
-  const MAX_DRAG = 200;
+  const MAX_DRAG = deviceHeight*.25;
 
   const devices = useCameraDevices();
   const cameraRef = useRef(null);
@@ -150,19 +147,19 @@ const GoogleLensUI = () => {
         boxX.value = interpolate(
           flexSecond.value,
           [0.6, 0.8],
-          [ storedXValue,0],
+          [ storedXValue,0 ],
           Extrapolation.CLAMP,
         );
         boxY.value = interpolate(
           flexSecond.value,
           [0.6, 0.8],
-          [ yStored,0],
+          [ yStored,0 ],
           Extrapolation.CLAMP,
         );
         imageScale.value = interpolate(
           flexSecond.value,
-          [0.6, 0.8],
-          [ 1,.2],
+          [0.6, 0.85],
+          [ 1,0],
           Extrapolation.CLAMP,
         );
 
