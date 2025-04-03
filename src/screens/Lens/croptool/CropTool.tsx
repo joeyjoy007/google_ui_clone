@@ -1,7 +1,7 @@
 import React, { useCallback, useContext, } from "react";
 import { View, StyleSheet, Dimensions, Image, TouchableOpacity,  } from "react-native";
 import { Gesture, GestureDetector, } from "react-native-gesture-handler";
-import Animated, { useSharedValue, useAnimatedStyle } from "react-native-reanimated";
+import Animated, { useSharedValue, useAnimatedStyle, runOnJS } from "react-native-reanimated";
 import { colors } from "../../../utils/colors";
 import ImageEditor from "@react-native-community/image-editor";
 import { cropToolDimensions } from "../../../utils/appData";
@@ -16,10 +16,7 @@ const CropTool = ({capturedImage}) => {
   const [imageRealHeight, setImageRealHeight] = React.useState(1000)
   const [imageUri, setImageUri] = React.useState('')
 
-  const {boxX,boxY,boxWidth,boxHeight}:any = useContext(CroptoolContext)
-
-   console.log("YUY",capturedImage)
-    
+  const {boxX,boxY,boxWidth,boxHeight,setIsSecondViewScrolling,imageScale,isSecondViewScrolling,setSetstoredXValue,yValueSet}:any = useContext(CroptoolContext)    
 
 
 
@@ -41,6 +38,12 @@ const CropTool = ({capturedImage}) => {
     .onEnd(() => {
       offsetX.value = boxX.value;
       offsetY.value = boxY.value;
+      console.log("SSSSSSS",boxX.value,boxY.value)
+
+      'worklet'
+      runOnJS(yValueSet)(boxY.value)
+      'worklet'
+      runOnJS(setSetstoredXValue)(boxX.value)
     });
 
 
@@ -70,7 +73,6 @@ const CropTool = ({capturedImage}) => {
   }));
 
   const getImageDimensions = (imageUri:string) => {
-    console.log("IMAGE URIIII",imageUri)
     Image.getSize(imageUri, (width, height) => {
       console.log(
         "DSS",width,height
@@ -84,6 +86,14 @@ const CropTool = ({capturedImage}) => {
     
     });
   };
+
+  const scalingImageStyle = useAnimatedStyle(()=>{
+    return{
+      transform:[{scale:imageScale.value}],
+    }
+  })
+ 
+     
 
   
  
@@ -125,12 +135,23 @@ const CropTool = ({capturedImage}) => {
     }
   };
 
+  React.useEffect(() => {
+    if(isSecondViewScrolling){
+      cropImage()
+    }
+    return () => {
+    }
+  }, [isSecondViewScrolling])
+
   return (
     <>
       <View style={[StyleSheet.absoluteFill,{backgroundColor:colors.lightGrey} ]}>
         {/* Move Gesture */}
         <GestureDetector gesture={panGesture}>
-          <Animated.View style={[styles.focusBox, animatedBoxStyle]}>
+          <Animated.View style={[styles.focusBox, animatedBoxStyle,scalingImageStyle]}>
+            {
+              isSecondViewScrolling&& <Image source={{uri:imageUri}} style={{width:boxWidth.value,height:boxHeight.value,borderRadius:25}}/>
+            }
             <GestureDetector gesture={resizeGesture}>
               <View style={[styles.resizeHandle, styles.cornerBottomRight]} />
             </GestureDetector>

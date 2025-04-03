@@ -1,4 +1,4 @@
-import React, { useCallback } from 'react';
+import React, { useCallback, useContext } from 'react';
 import {View, StyleSheet, TextStyle, TextInput, Pressable, Image} from 'react-native';
 import Animated, {useAnimatedStyle, withTiming} from 'react-native-reanimated';
 import {GoogleMicSvg, GoogleSvg} from '../../../assets/svg';
@@ -10,6 +10,7 @@ import { useFocusEffect, useNavigation } from '@react-navigation/native';
 import { navigationKey } from '../../../utils/navigation';
 import ImageEditor from '@react-native-community/image-editor';
 import ImageResizer from '@bam.tech/react-native-image-resizer';
+import { CroptoolContext } from '../../../context/CropToolContext';
 
 
 const CroppedImage = ({
@@ -27,9 +28,11 @@ const CroppedImage = ({
     styles;
 
 
+
   const [imageRealWidth, setImageRealWidth] = React.useState(1000);
   const [imageRealHeight, setImageRealHeight] = React.useState(1000);
   const [resizedImage, setResizedImage] = React.useState('')
+
 
     const navigation = useNavigation()
 
@@ -101,6 +104,9 @@ const CroppedImage = ({
         console.log('Error resizing image:', error);
       }
     };
+
+
+    
     
 
     useFocusEffect(
@@ -142,6 +148,7 @@ const CroppedImage = ({
             <TextInput
               placeholder="Add to your search"
               style={textStyle}
+              editable={false}
               placeholderTextColor={colors.black}
             />
           </View>
