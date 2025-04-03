@@ -1,4 +1,4 @@
-import React, {useState, useCallback, useRef} from 'react';
+import React, {useState, useCallback, useRef, useContext} from 'react';
 import {
   View,
   StyleSheet,
@@ -17,16 +17,24 @@ import {useFocusEffect} from '@react-navigation/native';
 import {Gesture, GestureDetector} from 'react-native-gesture-handler';
 import {Camera, useCameraDevices} from 'react-native-vision-camera';
 
-import {deviceHeight,} from '../../utils/styles';
+import {deviceHeight, deviceWidth,} from '../../utils/styles';
 import {RESULTS} from 'react-native-permissions';
 import FocusCorners from './FocusCorners';
 import LensFooter from './LensFooter';
 import LensHeader from './Header';
 import BottomContainer from './BottomContainer';
 import CroppedImage from './croppedImage/CroppedImage';
+import { CroptoolContext } from '../../context/CropToolContext';
+import { cropToolDimensions } from '../../utils/appData';
 
 
 const GoogleLensUI = () => {
+
+  const{isSecondViewScrolling,imageScale,boxX,boxY,setIsSecondViewScrolling,storedXValue,yStored}:any = useContext(CroptoolContext)
+
+  console.log("STOREDY",yStored,storedXValue)
+
+
   const [expanded, setExpanded] = useState(false);
   const [scrollEnabled, setScrollEnabled] = useState(false);
   const [hasPermission, setHasPermission] = useState(false);
@@ -34,7 +42,7 @@ const GoogleLensUI = () => {
 
   
 
-  const MAX_DRAG = 100;
+  const MAX_DRAG = 200;
 
   const devices = useCameraDevices();
   const cameraRef = useRef(null);
@@ -72,6 +80,7 @@ const GoogleLensUI = () => {
         setExpanded(false);
         setScrollEnabled(false);
         setCapturedImage(null);
+        imageScale.value = 1
         
       };
     }, []),
@@ -138,6 +147,24 @@ const GoogleLensUI = () => {
           [0.85, 0.6],
           Extrapolation.CLAMP,
         );
+        boxX.value = interpolate(
+          flexSecond.value,
+          [0.6, 0.8],
+          [ storedXValue,0],
+          Extrapolation.CLAMP,
+        );
+        boxY.value = interpolate(
+          flexSecond.value,
+          [0.6, 0.8],
+          [ yStored,0],
+          Extrapolation.CLAMP,
+        );
+        imageScale.value = interpolate(
+          flexSecond.value,
+          [0.6, 0.8],
+          [ 1,.2],
+          Extrapolation.CLAMP,
+        );
 
         bottomContainerOpacity.value = interpolate(
           newOffset,
@@ -160,6 +187,14 @@ const GoogleLensUI = () => {
           [-MAX_DRAG, 0, MAX_DRAG],
           [1, 0.5, 0],
         );
+
+        if (flexSecond.value > 0.6) {
+          'worklet'
+          runOnJS(setIsSecondViewScrolling)(true)
+        } else {
+          'worklet'
+          runOnJS(setIsSecondViewScrolling)(false)
+        }
       }
     })
     .onFinalize(event => {
