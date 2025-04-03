@@ -11,12 +11,12 @@ import { useFocusEffect } from "@react-navigation/native";
 
 
 
-const CropTool = ({capturedImage}) => {
+const CropTool = ({capturedImage,colorAnimationStyle}) => {
   const [imageRealWidth, setImageRealWidth] = React.useState(1000)
   const [imageRealHeight, setImageRealHeight] = React.useState(1000)
   const [imageUri, setImageUri] = React.useState('')
 
-  const {boxX,boxY,boxWidth,boxHeight,setIsSecondViewScrolling,imageScale,isSecondViewScrolling,setSetstoredXValue,yValueSet}:any = useContext(CroptoolContext)    
+  const {boxX,boxY,boxWidth,boxHeight,setIsSecondViewScrolling,setResizedImageUri,resizedImageUri,imageScale,isSecondViewScrolling,setSetstoredXValue,yValueSet}:any = useContext(CroptoolContext)    
 
 
 
@@ -38,7 +38,6 @@ const CropTool = ({capturedImage}) => {
     .onEnd(() => {
       offsetX.value = boxX.value;
       offsetY.value = boxY.value;
-      console.log("SSSSSSS",boxX.value,boxY.value)
 
       'worklet'
       runOnJS(yValueSet)(boxY.value)
@@ -59,7 +58,7 @@ const CropTool = ({capturedImage}) => {
       boxWidth.value = newWidth;
       boxHeight.value = newHeight;
 
-      console.log("SAu",boxY.value)
+      console.log("SAu",boxY.value,boxY.value)
 
     });
 
@@ -130,6 +129,7 @@ const CropTool = ({capturedImage}) => {
       const uri = await ImageEditor.cropImage(capturedImage, cropData);
       console.log("Cropped Image URI: ", uri);
       setImageUri(uri.uri);
+      setResizedImageUri(uri.uri)
     } catch (error) {
       console.error("Image cropping failed: ", error);
     }
@@ -145,7 +145,7 @@ const CropTool = ({capturedImage}) => {
 
   return (
     <>
-      <View style={[StyleSheet.absoluteFill,{backgroundColor:colors.lightGrey} ]}>
+      <Animated.View style={[StyleSheet.absoluteFill,colorAnimationStyle ]}>
         {/* Move Gesture */}
         <GestureDetector gesture={panGesture}>
           <Animated.View style={[styles.focusBox, animatedBoxStyle,scalingImageStyle]}>
@@ -162,7 +162,7 @@ const CropTool = ({capturedImage}) => {
           <Image source={{uri:imageUri}} style={{width:200,height:200,resizeMode:'contain'}}/>
         </TouchableOpacity> */}
         
-      </View>
+      </Animated.View>
     </>
   );
 };
