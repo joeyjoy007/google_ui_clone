@@ -32,20 +32,17 @@ const LensFooter = ({
 
       launchImageLibrary(options, response => {
         if (response.didCancel) {
-          console.log('User cancelled image picker');
         } else if (response.errorMessage) {
         } else if (response.assets && response.assets.length > 0) {
           if (response.assets[0].uri) {
             setCapturedImage(response.assets[0].uri);
             expandView();
           } else {
-            console.error('Image URI is undefined');
           }
         }
       });
     } catch (error) {
       setCapturedImage(null);
-      console.log('Error occured in opening gallary');
     }
   };
   return (

@@ -13,8 +13,8 @@ import Animated, {
   useAnimatedStyle,
   withTiming,
 } from 'react-native-reanimated';
-import { useNavigation } from '@react-navigation/native';
-import { navigationKey } from '../../utils/navigation';
+import {useNavigation} from '@react-navigation/native';
+import {navigationKey} from '../../utils/navigation';
 
 interface IBottomContainer {
   capturedImage: string;
@@ -42,7 +42,7 @@ const BottomContainer = ({
     capturedGoogleStyle,
   } = styles;
 
-  const navigation = useNavigation()
+  const navigation = useNavigation();
 
   const opacityStyle = useAnimatedStyle(() => ({
     opacity: withTiming(opacity.value),
@@ -72,8 +72,9 @@ const BottomContainer = ({
                 placeholderTextColor={colors.black}
               />
             </View>
-            <Pressable onPress={()=>navigation.navigate(navigationKey.SPEECH)}>
-                <GoogleMicSvg />
+            <Pressable
+              onPress={() => navigation.navigate(navigationKey.SPEECH)}>
+              <GoogleMicSvg />
             </Pressable>
           </Animated.View>
         )}
@@ -111,7 +112,7 @@ const BottomContainer = ({
           </View>
         </Animated.View>
 
-        <Animated.View style={[getTopBar, {paddingTop:10}]}>
+        <Animated.View style={[getTopBar, {paddingTop: 10}]}>
           <SearchTopBar />
         </Animated.View>
         <Divider top={10} />
