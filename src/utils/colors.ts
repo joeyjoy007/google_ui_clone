@@ -25,6 +25,7 @@ export const colors = {
     sliverGrey:'#eeeded',
     lightWhite:"rgba(255, 255, 255, 0.5)",
     lightBlack:'rgba(0,0,0,.5)' ,
+    overLayBlack:'rgba(0,0,0,.7)',
     lightGrey:'rgba(0,0,0,.2)',
     searchBarColor:'#e8eaed',
     transparent:'#ffffff00',

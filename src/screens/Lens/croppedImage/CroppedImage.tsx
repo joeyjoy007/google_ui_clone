@@ -1,7 +1,6 @@
 import React, {useCallback, useContext} from 'react';
 import {View, StyleSheet, TextInput, Pressable, Image} from 'react-native';
 import Animated, {
-  interpolateColor,
   useAnimatedStyle,
   withTiming,
 } from 'react-native-reanimated';
@@ -46,14 +45,7 @@ const CroppedImage = ({
     };
   });
 
-  const colorAnimationStyle = useAnimatedStyle(() => {
-    const backgroundColor = interpolateColor(
-      translateY.value,
-      [1, 0],
-      [colors.lightBlack, colors.transparent],
-    );
-    return {backgroundColor};
-  });
+ 
 
   const animateGoogleStuff = useAnimatedStyle(() => {
     return {
@@ -120,10 +112,9 @@ const CroppedImage = ({
       </Animated.View>
       <CropTool
         capturedImage={resizedImage}
-        colorAnimationStyle={colorAnimationStyle}
       />
 
-      <Animated.View style={[googleStuffView, animateGoogleStuff]}>
+      <Animated.View style={[googleStuffView, animateGoogleStuff,{zIndex:-1}]}>
         <View style={{marginTop: 25}}>
           <GoogleSvg width={100} height={100} />
         </View>
@@ -131,10 +122,10 @@ const CroppedImage = ({
           <View style={iconStyle}>
             <MaterialIcons name="search" size={25} />
 
-            <Animated.Image
+            {/* <Animated.Image
               source={{uri: resizedImageUri || `file://${capturedImage}`}}
               style={[searchBarImage]}
-            />
+            /> */}
 
             <TextInput
               placeholder="Add to your search"
@@ -185,7 +176,7 @@ const styles = StyleSheet.create({
   },
   textStyle: {
     fontFamily: fontFamily.ProductSansMedium,
-    marginLeft: 5,
+    marginLeft: 40,
   },
   container: {
     flex: 1,
