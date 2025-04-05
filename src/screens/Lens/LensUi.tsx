@@ -180,7 +180,7 @@ const GoogleLensUI = () => {
         imageScale.value = interpolate(
           flexSecond.value,
           [0.6, 0.85],
-          [1, .1],
+          [1, storedXWidth < 150 && storedYHeight < 150 ? 0.3 : storedXWidth<150?.17:.1],
           Extrapolation.CLAMP,
         );
 
