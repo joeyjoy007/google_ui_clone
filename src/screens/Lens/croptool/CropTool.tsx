@@ -14,7 +14,7 @@ import {CroptoolContext} from '../../../context/CropToolContext';
 import {deviceWidth} from '../../../utils/styles';
 import {useFocusEffect} from '@react-navigation/native';
 
-const CropTool = ({capturedImage, colorAnimationStyle}) => {
+const CropTool = ({capturedImage}:{capturedImage:string}) => {
   const [imageRealWidth, setImageRealWidth] = React.useState(1000);
   const [imageRealHeight, setImageRealHeight] = React.useState(1000);
   const [imageUri, setImageUri] = React.useState('');
@@ -110,6 +110,99 @@ const CropTool = ({capturedImage, colorAnimationStyle}) => {
       runOnJS(setStoredYHeight)(boxHeight.value);
     });
 
+  const resizeTopLeftGesture = Gesture.Pan()
+    .onStart(() => {
+      offsetX.value = boxX.value;
+      offsetY.value = boxY.value;
+      offsetWidth.value = boxWidth.value;
+      offsetHeight.value = boxHeight.value;
+    })
+    .onUpdate(event => {
+      const newX = offsetX.value + event.translationX;
+      const newY = offsetY.value + event.translationY;
+      const newWidth = offsetWidth.value - event.translationX;
+      const newHeight = offsetHeight.value - event.translationY;
+
+      if (newWidth >= cropToolDimensions.MIN_WIDTH && newX >= 0) {
+        boxX.value = newX;
+        boxWidth.value = newWidth;
+      }
+      if (newHeight >= cropToolDimensions.MIN_HEIGHT && newY >= 0) {
+        boxY.value = newY;
+        boxHeight.value = newHeight;
+      }
+    })
+    .onEnd(() => {
+      'worklet';
+      runOnJS(yValueSet)(boxY.value);
+      ('worklet');
+      runOnJS(setSetstoredXValue)(boxX.value);
+      ('worklet');
+      runOnJS(setStoredXWidth)(boxWidth.value);
+      ('worklet');
+      runOnJS(setStoredYHeight)(boxHeight.value);
+    });
+
+  const resizeTopRightGesture = Gesture.Pan()
+    .onStart(() => {
+      offsetY.value = boxY.value;
+      offsetWidth.value = boxWidth.value;
+      offsetHeight.value = boxHeight.value;
+    })
+    .onUpdate(event => {
+      const newY = offsetY.value + event.translationY;
+      const newWidth = offsetWidth.value + event.translationX;
+      const newHeight = offsetHeight.value - event.translationY;
+
+      if (newWidth >= cropToolDimensions.MIN_WIDTH) {
+        boxWidth.value = newWidth;
+      }
+      if (newHeight >= cropToolDimensions.MIN_HEIGHT && newY >= 0) {
+        boxY.value = newY;
+        boxHeight.value = newHeight;
+      }
+    })
+    .onEnd(() => {
+      'worklet';
+      runOnJS(yValueSet)(boxY.value);
+      ('worklet');
+      runOnJS(setSetstoredXValue)(boxX.value);
+      ('worklet');
+      runOnJS(setStoredXWidth)(boxWidth.value);
+      ('worklet');
+      runOnJS(setStoredYHeight)(boxHeight.value);
+    });
+
+  const resizeBottomLeftGesture = Gesture.Pan()
+    .onStart(() => {
+      offsetX.value = boxX.value;
+      offsetWidth.value = boxWidth.value;
+      offsetHeight.value = boxHeight.value;
+    })
+    .onUpdate(event => {
+      const newX = offsetX.value + event.translationX;
+      const newWidth = offsetWidth.value - event.translationX;
+      const newHeight = offsetHeight.value + event.translationY;
+
+      if (newWidth >= cropToolDimensions.MIN_WIDTH && newX >= 0) {
+        boxX.value = newX;
+        boxWidth.value = newWidth;
+      }
+      if (newHeight >= cropToolDimensions.MIN_HEIGHT) {
+        boxHeight.value = newHeight;
+      }
+    })
+    .onEnd(() => {
+      'worklet';
+      runOnJS(yValueSet)(boxY.value);
+      ('worklet');
+      runOnJS(setSetstoredXValue)(boxX.value);
+      ('worklet');
+      runOnJS(setStoredXWidth)(boxWidth.value);
+      ('worklet');
+      runOnJS(setStoredYHeight)(boxHeight.value);
+    });
+
   const animatedBoxStyle = useAnimatedStyle(() => ({
     position: 'absolute',
     width: boxWidth.value,
@@ -193,7 +286,69 @@ const CropTool = ({capturedImage, colorAnimationStyle}) => {
 
   return (
     <>
-      <Animated.View style={[StyleSheet.absoluteFill, colorAnimationStyle]}>
+      <Animated.View style={[StyleSheet.absoluteFill]}>
+        <Animated.View style={[StyleSheet.absoluteFill]}>
+          <Animated.View
+            style={[
+              useAnimatedStyle(() => ({
+                position: 'absolute',
+                top: 0,
+                left: 0,
+                right: 0,
+                height: boxY.value,
+                backgroundColor: isSecondViewScrolling
+                  ? colors.transparent
+                  : colors.overLayBlack,
+              })),
+            ]}
+          />
+
+          <Animated.View
+            style={[
+              useAnimatedStyle(() => ({
+                position: 'absolute',
+                top: boxY.value + boxHeight.value,
+                left: 0,
+                right: 0,
+                bottom: 0,
+                backgroundColor: isSecondViewScrolling
+                  ? colors.transparent
+                  : colors.overLayBlack,
+              })),
+            ]}
+          />
+
+          <Animated.View
+            style={[
+              useAnimatedStyle(() => ({
+                position: 'absolute',
+                top: boxY.value,
+                left: 0,
+                width: boxX.value,
+                height: boxHeight.value,
+                backgroundColor: isSecondViewScrolling
+                  ? colors.transparent
+                  : colors.overLayBlack,
+              })),
+            ]}
+          />
+
+          <Animated.View
+            style={[
+              useAnimatedStyle(() => ({
+                position: 'absolute',
+                top: boxY.value,
+                left: boxX.value + boxWidth.value,
+                right: 0,
+                height: boxHeight.value,
+                backgroundColor: isSecondViewScrolling
+                  ? colors.transparent
+                  : colors.overLayBlack,
+              })),
+            ]}
+          />
+        </Animated.View>
+
         <GestureDetector gesture={panGesture}>
           <Animated.View
             entering={BounceIn}
@@ -205,13 +360,31 @@ const CropTool = ({capturedImage, colorAnimationStyle}) => {
                   width: storedXWidth,
                   height: storedYHeight,
                   borderRadius: 25,
+                  zIndex: 999999999999,
+                  position: 'absolute',
+                  resizeMode:'contain'
                 }}
               />
             )}
             {!isSecondViewScrolling && (
-              <GestureDetector gesture={resizeGesture}>
-                <View style={[styles.resizeHandle, styles.cornerBottomRight]} />
-              </GestureDetector>
+              <>
+                <GestureDetector gesture={resizeGesture}>
+                  <View
+                    style={[styles.resizeHandle, styles.cornerBottomRight]}
+                  />
+                </GestureDetector>
+                <GestureDetector gesture={resizeTopLeftGesture}>
+                  <View style={[styles.resizeHandle, styles.cornerTopLeft]} />
+                </GestureDetector>
+                <GestureDetector gesture={resizeTopRightGesture}>
+                  <View style={[styles.resizeHandle, styles.cornerTopRight]} />
+                </GestureDetector>
+                <GestureDetector gesture={resizeBottomLeftGesture}>
+                  <View
+                    style={[styles.resizeHandle, styles.cornerBottomLeft]}
+                  />
+                </GestureDetector>
+              </>
             )}
           </Animated.View>
         </GestureDetector>
@@ -222,26 +395,51 @@ const CropTool = ({capturedImage, colorAnimationStyle}) => {
 
 export default CropTool;
 
+const defaultBorderWidth = -4;
+
 const styles = StyleSheet.create({
   focusBox: {
-    borderRadius: 30,
-    backgroundColor: 'rgba(255,255,255,0.3)',
-    borderWidth: 0.5,
-    borderColor: colors.white,
+    backgroundColor: colors.transparent,
     justifyContent: 'center',
     alignItems: 'center',
+    borderRadius: 10,
   },
+
   resizeHandle: {
-    width: 40,
-    height: 40,
+    width: 25,
+    height: 25,
     position: 'absolute',
-    backgroundColor: 'rgba(255,255,255,0.5)',
-    borderRadius: 20,
-    borderWidth: 2,
-    borderColor: colors.white,
   },
   cornerBottomRight: {
-    bottom: -20,
-    right: -20,
+    bottom: defaultBorderWidth,
+    right: defaultBorderWidth,
+    borderRightWidth: -defaultBorderWidth,
+    borderBottomWidth: -defaultBorderWidth,
+    borderBottomRightRadius: 15,
+    borderColor: colors.white,
+  },
+  cornerTopLeft: {
+    top: defaultBorderWidth,
+    left: defaultBorderWidth,
+    borderLeftWidth: -defaultBorderWidth,
+    borderTopWidth: -defaultBorderWidth,
+    borderTopLeftRadius: 15,
+    borderColor: colors.white,
+  },
+  cornerTopRight: {
+    top: defaultBorderWidth,
+    right: defaultBorderWidth,
+    borderRightWidth: -defaultBorderWidth,
+    borderTopWidth: -defaultBorderWidth,
+    borderTopRightRadius: 15,
+    borderColor: colors.white,
+  },
+  cornerBottomLeft: {
+    bottom: defaultBorderWidth,
+    left: defaultBorderWidth,
+    borderLeftWidth: -defaultBorderWidth,
+    borderBottomWidth: -defaultBorderWidth,
+    borderBottomLeftRadius: 15,
+    borderColor: colors.white,
   },
 });
