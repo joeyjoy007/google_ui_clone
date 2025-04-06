@@ -24,7 +24,6 @@ import {cropToolDimensions} from '../../utils/appData';
 
 const GoogleLensUI = () => {
   const {
-    imageScale,
     boxX,
     boxY,
     boxWidth,
@@ -34,6 +33,8 @@ const GoogleLensUI = () => {
     yStored,
     storedYHeight,
     storedXWidth,
+    animatedImageHeight,
+    animatedImageWidth
   }: any = useContext(CroptoolContext);
 
   const [expanded, setExpanded] = useState(false);
@@ -74,7 +75,8 @@ const GoogleLensUI = () => {
         bottomContainerTopBar.value = 0;
         showGoogleStuff.value = 0;
         croppedImageTranslateY.value = 1;
-        imageScale.value = 1;
+        animatedImageHeight = cropToolDimensions.INITIAL_HEIGHT
+        animatedImageWidth = cropToolDimensions.INITIAL_WIDTH
         boxX.value = (deviceWidth - cropToolDimensions.INITIAL_WIDTH) / 2;
         boxY.value =
           (cropToolDimensions.MAX_HEIGHT - cropToolDimensions.INITIAL_HEIGHT) /
@@ -177,12 +179,12 @@ const GoogleLensUI = () => {
           [storedYHeight, 70],
           Extrapolation.CLAMP,
         );
-        imageScale.value = interpolate(
-          flexSecond.value,
-          [0.6, 0.85],
-          [1, storedXWidth < 150 && storedYHeight < 150 ? 0.3 : storedXWidth<150?.17:.1],
-          Extrapolation.CLAMP,
-        );
+        animatedImageHeight.value = interpolate(
+          flexSecond.value,[0.6,0.85],[storedYHeight,30],Extrapolation.CLAMP
+        )
+        animatedImageWidth.value = interpolate(
+          flexSecond.value,[0.6,0.85],[storedXWidth,50],Extrapolation.CLAMP
+        )
 
         bottomContainerOpacity.value = interpolate(
           newOffset,

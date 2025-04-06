@@ -6,6 +6,7 @@ import Animated, {
   useAnimatedStyle,
   runOnJS,
   BounceIn,
+  withTiming
 } from 'react-native-reanimated';
 import {colors} from '../../../utils/colors';
 import ImageEditor from '@react-native-community/image-editor';
@@ -25,7 +26,6 @@ const CropTool = ({capturedImage}:{capturedImage:string}) => {
     boxWidth,
     boxHeight,
     setResizedImageUri,
-    imageScale,
     isSecondViewScrolling,
     setSetstoredXValue,
     yValueSet,
@@ -33,6 +33,8 @@ const CropTool = ({capturedImage}:{capturedImage:string}) => {
     setStoredXWidth,
     storedYHeight,
     setStoredYHeight,
+    animatedImageHeight,
+    animatedImageWidth
   }: any = useContext(CroptoolContext);
 
   const offsetX = useSharedValue(boxX.value);
@@ -225,12 +227,6 @@ const CropTool = ({capturedImage}:{capturedImage:string}) => {
     );
   };
 
-  const scalingImageStyle = useAnimatedStyle(() => {
-    return {
-      transform: [{scale: imageScale.value}],
-    };
-  });
-
   useFocusEffect(
     useCallback(() => {
       getImageDimensions(capturedImage);
@@ -242,7 +238,6 @@ const CropTool = ({capturedImage}:{capturedImage:string}) => {
         boxWidth.value = cropToolDimensions.INITIAL_WIDTH;
         boxHeight.value = cropToolDimensions.INITIAL_HEIGHT;
         setResizedImageUri('');
-        imageScale.value = 1;
         setSetstoredXValue(
           (deviceWidth - cropToolDimensions.INITIAL_WIDTH) / 2,
         );
@@ -283,6 +278,13 @@ const CropTool = ({capturedImage}:{capturedImage:string}) => {
     }
     return () => {};
   }, [isSecondViewScrolling]);
+
+  const animatedBoxStyle2 = useAnimatedStyle(()=>{
+    return {
+      width:animatedImageWidth.value,
+      height:animatedImageHeight.value
+    }
+  })
 
   return (
     <>
@@ -352,18 +354,17 @@ const CropTool = ({capturedImage}:{capturedImage:string}) => {
         <GestureDetector gesture={panGesture}>
           <Animated.View
             entering={BounceIn}
-            style={[styles.focusBox, animatedBoxStyle, scalingImageStyle]}>
+            style={[styles.focusBox, animatedBoxStyle]}>
             {isSecondViewScrolling && (
-              <Image
+              <Animated.Image
                 source={{uri: imageUri}}
-                style={{
-                  width: storedXWidth,
-                  height: storedYHeight,
-                  borderRadius: 25,
+                style={[{
+                
+                  borderRadius: 15,
                   zIndex: 999999999999,
                   position: 'absolute',
                   resizeMode:'contain'
-                }}
+                },animatedBoxStyle2]}
               />
             )}
             {!isSecondViewScrolling && (
