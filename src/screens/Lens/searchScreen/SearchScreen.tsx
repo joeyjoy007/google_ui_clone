@@ -91,7 +91,7 @@ const styles = StyleSheet.create({
     display: 'flex',
     flexDirection: 'row',
     flexWrap: 'wrap',
-    justifyContent: 'space-evenly',
+    paddingHorizontal:2
   },
   textView: {
     flexDirection: 'row',
