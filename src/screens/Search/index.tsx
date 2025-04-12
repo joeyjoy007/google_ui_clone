@@ -17,6 +17,7 @@ import {request, PERMISSIONS, RESULTS, check} from 'react-native-permissions';
 import {MaterialIcons} from '../../utils/icons';
 
 import {RouteProp} from '@react-navigation/native';
+import { SafeAreaView } from 'react-native-safe-area-context';
 
 type SearchScreenRouteProp = RouteProp<{params: {audioText?: string}}, 'params'>;
 
@@ -71,7 +72,8 @@ const SearchScreen = ({route}: {route: SearchScreenRouteProp}) => {
     navigation.navigate(navigationKey.LENS);
   };
   return (
-    <View style={parentView}>
+ <SafeAreaView style={{flex:1}}>
+     <View style={parentView}>
       <View style={mainContainer}>
         <Pressable style={searchIcon} onPress={navigateToHome}>
           <MaterialIcons name="arrow-back" size={25} />
@@ -96,6 +98,7 @@ const SearchScreen = ({route}: {route: SearchScreenRouteProp}) => {
       </View>
       <SearchList />
     </View>
+ </SafeAreaView>
   );
 };
 

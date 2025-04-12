@@ -31,7 +31,7 @@ const TabNavigation = () => {
       
         return {
           headerShown: false,
-          tabBarStyle: { height: 65 },
+          tabBarStyle: { height: 65,paddingTop:10},
           tabBarLabelStyle: { fontSize: 12 }, 
           tabBarActiveTintColor: colors.tabBar.active, 
           tabBarInactiveTintColor:colors.tabBar.inactive,
@@ -87,6 +87,6 @@ const styles = StyleSheet.create({
     alignItems: 'center',
     justifyContent: 'center',
     borderRadius: 100,},
-    tabBarButtonStyle:{ flex: 1,alignItems:'center',justifyContent:'center' },
+    tabBarButtonStyle:{ flex: 1,alignItems:'center',},
     tabBarIconContainer:{width:60,alignItems:'center',height:35,justifyContent:'center'}
 })
